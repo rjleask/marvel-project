@@ -14,7 +14,8 @@ export default {
       "&apikey=" +
       pubKey +
       "&hash=" +
-      hash;
+      hash +
+      "&limit=16";
 
     return axios.get(url).then(res => {
       return res.data.data.results;
