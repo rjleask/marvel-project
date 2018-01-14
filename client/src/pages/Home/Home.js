@@ -19,10 +19,12 @@ class Home extends Component {
       ? this.makeTheDecks()
       : console.log("Not here Yet");
   }
+  // player
   playerObject = {
     cardNum: 8,
     deck: []
   };
+  // bot
   botObject = {
     cardNum: 8,
     deck: []
