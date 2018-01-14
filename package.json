@@ -1,0 +1,42 @@
+{
+  "name": "showdown",
+  "version": "1.0.0",
+  "description": "MERN stack app baseball strategy card game",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "node server.js",
+    "client": "node scripts/start-client.js",
+    "start": "concurrently \"nodemon server.js\" \"npm run client\"",
+    "build": "node scripts/build.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rjleask/create-a-pizza.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rjleask/create-a-pizza/issues"
+  },
+  "homepage": "https://github.com/rjleask/create-a-pizza#readme",
+  "devDependencies": {
+    "concurrently": "^3.5.0",
+    "nodemon": "^1.11.0"
+  },
+  "dependencies": {
+    "axios": "^0.17.0",
+    "body-parser": "^1.18.1",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.15.4",
+    "inquirer": "^4.0.1",
+    "marvel": "^1.0.2",
+    "marvel-api": "^1.1.0",
+    "method-override": "^2.3.9",
+    "mysql": "^2.14.1",
+    "mysql2": "^1.4.2",
+    "path": "^0.12.7",
+    "sequelize": "^4.11.5",
+    "sequelize-cli": "^3.0.0"
+  }
+}
