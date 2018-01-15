@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import "./Home.css";
 import TestButton from "../../components/TestButton";
 import API from "../../utils/API.js";
+import ToggleCharacter from "../../components/ToggleCharacterButton";
 const axios = require("axios");
 
 class Home extends Component {
@@ -10,7 +11,8 @@ class Home extends Component {
     super(props);
     this.state = {
       characters: [],
-      hasData: false
+      hasData: false,
+      isHidden: true
     };
   }
   componentDidUpdate(prevProps, prevState) {
@@ -45,10 +47,10 @@ class Home extends Component {
       deckInitial[i].value = i + 1;
     }
     deckFinal = deckInitial.concat(sectionArr1, sectionArr2, sectionArr3);
+    // add player and bot decks
     this.playerObject.deck = deckFinal.slice(0, 8);
     this.botObject.deck = deckFinal.slice(8, 16);
     console.log(this.botObject.deck, this.playerObject.deck);
-    // console.log(deckFinal);
   };
   loadAllCharacters = () => {
     API.getAllCharacters()
@@ -59,20 +61,29 @@ class Home extends Component {
       )
       .catch(err => console.log(err));
   };
+  toggleCharacter = () => {
+    this.setState({
+      isHidden: !this.state.isHidden
+    });
+  };
 
   render() {
     return (
       <div>
-        <TestButton onClick={this.loadAllCharacters} />
-        {this.state.characters.length > 10 ? (
-          <div>
-            {this.state.characters.map((character, i) => (
-              <div key={i}>{character.name}</div>
-            ))}
-          </div>
-        ) : (
-          <h5>No characters</h5>
-        )}
+        <div className="game-wrapper">
+          <ToggleCharacter onClick={this.toggleCharacter} />
+          <TestButton onClick={this.loadAllCharacters} />
+          {/* toggle display of character navbar */}
+          <section
+            className={
+              this.state.isHidden
+                ? "flex-playerbot-row disappear"
+                : "flex-playerbot-row reappear"
+            }
+          >
+            <div className="playerbot-character-box" />
+          </section>
+        </div>
       </div>
     );
   }

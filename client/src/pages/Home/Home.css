@@ -1,0 +1,28 @@
+.flex-playerbot-row{
+  display: flex;
+  justify-content: center;
+  width:100%;
+  background: black;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+.playerbot-character-box{
+  height:200px;
+  width: 200px;
+  border: 1px solid red;
+}
+.disappear{
+  transition: all 0.5s ease-in-out;
+  max-height: 0;
+  overflow: hidden;
+}
+.reappear{
+  transition: all 0.5s ease-in-out;
+  overflow: hidden;
+  max-height: 600px;
+}
+.toggle-btn {
+  position: absolute;
+  top:50%
+}
