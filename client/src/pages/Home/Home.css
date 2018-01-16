@@ -1,3 +1,10 @@
+body{
+  margin:0;
+  padding:0;
+}
+.game-wrapper{
+  height: 100vh;
+}
 .flex-playerbot-row{
   display: flex;
   justify-content: center;
@@ -8,7 +15,7 @@
   left: 0;
 }
 .playerbot-character-box{
-  height:200px;
+  height:210px;
   width: 200px;
   border: 1px solid red;
 }
@@ -25,4 +32,26 @@
 .toggle-btn {
   position: absolute;
   top:50%
+}
+.deck-holder-row{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  align-items: center;
+}
+.deck-holder-box{
+ height: 210px;
+ width: 200px;
+ border: 1px solid red;
+}
+.game-middle-row{
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  margin: 10px 0;
+}
+.middle-card-boxes{
+  height: 210px;
+ width: 200px;
+ border: 1px solid red;
 }
