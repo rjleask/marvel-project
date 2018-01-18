@@ -13,6 +13,7 @@ const axios = require("axios");
 class Home extends Component {
   constructor(props) {
     super(props);
+    this.handleDeckClick = this.handleDeckClick.bind(this);
     this.state = {
       characters: [],
       hasData: false,
@@ -21,7 +22,8 @@ class Home extends Component {
       playerDeck: [],
       playerCardNum: 8,
       botDeck: [],
-      botCardNum: 8
+      botCardNum: 8,
+      currentCard: []
     };
   }
   componentDidUpdate(prevProps, prevState) {
@@ -69,6 +71,13 @@ class Home extends Component {
     }
     return arr;
   };
+  handleDeckClick() {
+    let currentCard = [this.state.playerDeck.splice(0, 1)[0]];
+    console.log(this.state.playerDeck.length);
+    this.setState({
+      currentCard: currentCard
+    });
+  }
   loadAllCharacters = () => {
     API.getAllCharacters()
       .then(res => {
@@ -87,7 +96,10 @@ class Home extends Component {
         <div>
           <DeckHolderBad deck={this.state.botDeck} />
           <MiddleGame />
-          <DeckHolderGood deck={this.state.playerDeck} />
+          <DeckHolderGood
+            action={this.handleDeckClick}
+            deck={this.state.currentCard}
+          />
         </div>
       );
     } else {

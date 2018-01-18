@@ -39,7 +39,7 @@ img{
 }
 .deck-holder-row{
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   width: 100%;
   align-items: center;
 }
@@ -47,7 +47,9 @@ img{
  height: 210px;
  width: 200px;
  border: 1px solid red;
+ align-self: center;
 }
+/* game middle area */
 .game-middle-row{
   display: flex;
   justify-content: space-around;
@@ -59,8 +61,18 @@ img{
   width: 200px;
   border: 1px solid red;
 }
+/* end middle area */
 .bad-guys{
   overflow: hidden;
+}
+.deck{
+  background:black;
+  align-self: flex-end;
+  background-image: url(http://is3.mzstatic.com/image/thumb/Purple122/v4/e1/3d/55/e13d55bd-f063-3a76-6560-6a49c48fb007/source/1200x630bb.jpg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
+  border-radius: 8px;
 }
 /* playing card setup */
 .playingcard-box{

@@ -3,15 +3,17 @@ import PlayingCard from "../PlayingCard";
 
 const DeckHolderBad = props => (
   <section className="deck-holder-row bad-guys">
+    <div className="deck-holder-box" style={{ visibility: "hidden" }} />
     <div className="deck-holder-box bad-guys">
-      {props.deck.length > 7 ? (
+      {/* {props.deck.length > 7 ? (
         <PlayingCard
           deck={props.deck[Math.floor(Math.random() * props.deck.length)]}
         />
       ) : (
         "no dice"
-      )}
+      )} */}
     </div>
+    <div className="deck-holder-box deck" />
   </section>
 );
 
