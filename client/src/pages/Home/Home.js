@@ -31,49 +31,68 @@ class Home extends Component {
       : console.log("Not here Yet");
     // this.state.gameStart ? this.startGame() : console.log("game not ready yet");
   }
-  // player
-  playerObject = {
-    cardNum: 8,
-    deck: []
-  };
-  // bot
-  botObject = {
-    cardNum: 8,
-    deck: []
-  };
+  compareCardValues = () => {};
   makeTheDecks = () => {
-    const deckInitial = [];
-    let deckFinal;
-    this.state.characters.forEach(character => {
-      deckInitial.push(character);
-    });
-    let sectionArr1 = deckInitial.splice(0, 4);
-    let sectionArr2 = deckInitial.splice(0, 4);
-    let sectionArr3 = deckInitial.splice(0, 4);
-    for (let i = 0; i < 4; i++) {
-      sectionArr1[i].value = i + 1;
-      sectionArr2[i].value = i + 1;
-      sectionArr3[i].value = i + 1;
-      deckInitial[i].value = i + 1;
+    if (this.state.playerDeck.length < 1) {
+      console.log(this.state.characters);
+      const deckInitial = [];
+      let deckFinal;
+      this.state.characters.forEach(character => {
+        deckInitial.push(character);
+      });
+      let sectionArr1 = deckInitial.splice(0, 4);
+      let sectionArr2 = deckInitial.splice(0, 4);
+      let sectionArr3 = deckInitial.splice(0, 4);
+      for (let i = 0; i < 4; i++) {
+        sectionArr1[i].value = i + 1;
+        sectionArr2[i].value = i + 1;
+        sectionArr3[i].value = i + 1;
+        deckInitial[i].value = i + 1;
+      }
+      deckFinal = deckInitial.concat(sectionArr1, sectionArr2, sectionArr3);
+      // add player and bot decks
+      this.setState({
+        playerDeck: deckFinal.slice(0, 8),
+        botDeck: deckFinal.slice(8, 16)
+      });
+      // this.botObject.deck = deckFinal.slice(8, 16);
+      // console.log(this.state.playerDeck, this.state.botDeck);
+    } else {
+      console.log("decks are made");
     }
-    deckFinal = deckInitial.concat(sectionArr1, sectionArr2, sectionArr3);
-    // add player and bot decks
-    this.setState({
-      playerDeck: deckFinal.slice(0, 8),
-      botDeck: deckFinal.slice(8, 16)
-    });
-    // this.botObject.deck = deckFinal.slice(8, 16);
-    console.log(this.botObject.deck, this.playerObject.deck);
+  };
+  shuffle = ([...arr]) => {
+    let m = arr.length;
+    while (m) {
+      const i = Math.floor(Math.random() * m--);
+      [arr[m], arr[i]] = [arr[i], arr[m]];
+    }
+    return arr;
   };
   loadAllCharacters = () => {
     API.getAllCharacters()
-      .then(res =>
+      .then(res => {
+        let randomArr = this.shuffle(res);
         this.setState({
-          characters: res,
+          characters: randomArr,
           gameStart: true
-        })
-      )
+        });
+      })
       .catch(err => console.log(err));
+  };
+  renderGame = () => {
+    // calls api and starts game if its not active
+    if (this.state.gameStart) {
+      return (
+        <div>
+          <DeckHolderBad deck={this.state.botDeck} />
+          <MiddleGame />
+          <DeckHolderGood deck={this.state.playerDeck} />
+        </div>
+      );
+    } else {
+      return <TestButton onClick={this.loadAllCharacters} />;
+    }
   };
   toggleCharacter = () => {
     this.setState({
@@ -96,18 +115,7 @@ class Home extends Component {
           <div className="playerbot-character-box" />
         </section>
         {/* end of navbar */}
-        {/* shows game board */}
-        {this.state.gameStart ? (
-          <div>
-            <DeckHolderBad />
-            <MiddleGame />
-            <DeckHolderGood />
-            {/* {this.state.loadDecks ? <div>} */}
-          </div>
-        ) : (
-          <TestButton onClick={this.loadAllCharacters} />
-        )}
-        {/* end of game board */}
+        {this.renderGame()}
       </div>
     );
   }

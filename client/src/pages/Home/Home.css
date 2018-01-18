@@ -5,6 +5,10 @@ body{
 .game-wrapper{
   height: 100vh;
 }
+img{
+  max-width: 100%;
+  max-height: auto;
+}
 .flex-playerbot-row{
   display: flex;
   justify-content: center;
@@ -52,6 +56,75 @@ body{
 }
 .middle-card-boxes{
   height: 210px;
- width: 200px;
- border: 1px solid red;
+  width: 200px;
+  border: 1px solid red;
 }
+.bad-guys{
+  overflow: hidden;
+}
+/* playing card setup */
+.playingcard-box{
+  border: 14px solid black;
+  width: 80%;
+  margin: 0 auto;
+  border-radius: 4%;
+  height: 178px;
+  position: relative;
+  overflow: hidden;
+  /* text-decoration: none; */
+  /* -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  transition: all 0.5s; */
+  /* color: #fff;
+  font-family: Monoton;
+  -webkit-animation: neon1 1.5s ease-in-out infinite alternate;
+  -moz-animation: neon1 1.5s ease-in-out infinite alternate;
+  animation: neon1 1.5s ease-in-out infinite alternate; */
+}
+.playingcard-box p{
+  margin:0;
+  padding: 0;
+  text-align: center;
+  color:black;
+}
+.playingcard-box span{
+  position: absolute;
+  bottom:0;
+  right:0;
+  padding:8%;
+  background: white;
+  border-radius: 50%;
+  font-weight: bold;
+  font-size: 20px;
+  color:black;
+}
+/* end of playing card setup */
+/* .playingcard-box {
+  text-decoration: none;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  transition: all 0.5s;
+} */
+
+/* p:nth-child(1) a {
+  color: #fff;
+  font-family: Monoton;
+  -webkit-animation: neon1 1.5s ease-in-out infinite alternate;
+  -moz-animation: neon1 1.5s ease-in-out infinite alternate;
+  animation: neon1 1.5s ease-in-out infinite alternate;
+} */
+/* 
+playercard-box:hover {
+  color: #FF1177;
+  -webkit-animation: none;
+  -moz-animation: none;
+  animation: none;
+}
+@-webkit-keyframes neon1 {
+  from {
+    box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px rgb(8, 8, 8), 0 0 70px rgb(8, 8, 8), 0 0 80px rgb(8, 8, 8), 0 0 100px rgb(8, 8, 8), 0 0 150px rgb(8, 8, 8);
+  }
+  to {
+    box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px rgb(8, 8, 8), 0 0 35px rgb(8, 8, 8), 0 0 40px rgb(8, 8, 8), 0 0 50px rgb(8, 8, 8), 0 0 75px rgb(8, 8, 8);
+  } */
+/* } */
