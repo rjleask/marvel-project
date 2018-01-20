@@ -4,6 +4,7 @@ import PlayingCard from "../PlayingCard";
 class DeckHolderGood extends React.Component {
   renderPlayingCards = () => {
     if (this.props.deck.length > 0) {
+      // const indexer = this.props.deck.map((item, i) => {});
       return <PlayingCard deck={this.props.deck[0]} />;
     }
   };
@@ -15,8 +16,7 @@ class DeckHolderGood extends React.Component {
           onClick={this.props.action}
         />
         <div className="deck-holder-box good-guys">
-          {console.log(this.props.deck)}
-          {/* {props.deck.length > 7 ? props.deck[0].name : "no dice"} */}
+          {/* {console.log(this.props.deck)} */}
           {this.renderPlayingCards()}
         </div>
         <div

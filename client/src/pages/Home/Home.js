@@ -23,7 +23,8 @@ class Home extends Component {
       playerCardNum: 8,
       botDeck: [],
       botCardNum: 8,
-      currentCard: []
+      currentCard: [],
+      displayCard: false
     };
   }
   componentDidUpdate(prevProps, prevState) {
@@ -52,10 +53,11 @@ class Home extends Component {
         deckInitial[i].value = i + 1;
       }
       deckFinal = deckInitial.concat(sectionArr1, sectionArr2, sectionArr3);
+      let shuffledDeck = this.shuffle(deckFinal);
       // add player and bot decks
       this.setState({
-        playerDeck: deckFinal.slice(0, 8),
-        botDeck: deckFinal.slice(8, 16)
+        playerDeck: shuffledDeck.slice(0, 8),
+        botDeck: shuffledDeck.slice(8, 16)
       });
       // this.botObject.deck = deckFinal.slice(8, 16);
       // console.log(this.state.playerDeck, this.state.botDeck);

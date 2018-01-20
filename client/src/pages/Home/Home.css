@@ -67,12 +67,14 @@ img{
 }
 .deck{
   background:black;
-  align-self: flex-end;
   background-image: url(http://is3.mzstatic.com/image/thumb/Purple122/v4/e1/3d/55/e13d55bd-f063-3a76-6560-6a49c48fb007/source/1200x630bb.jpg);
   background-repeat: no-repeat;
   background-position: center;
   background-size: 100% 100%;
   border-radius: 8px;
+}
+.deck:hover{
+  cursor: pointer;
 }
 /* playing card setup */
 .playingcard-box{
@@ -98,17 +100,39 @@ img{
   padding: 0;
   text-align: center;
   color:black;
+  font-weight:bold;
+  font-size: 20px;
+  background: rgb(11, 243, 11);
 }
 .playingcard-box span{
   position: absolute;
   bottom:0;
   right:0;
   padding:8%;
-  background: white;
   border-radius: 50%;
   font-weight: bold;
   font-size: 20px;
-  color:black;
+  color:rgb(11, 243, 11);
+  background: black;
+}
+.thumbnail{
+  animation:1s ease-out 0s slideInFromLeft
+}
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+.example-appear {
+  opacity: 0.01;
+}
+
+.example-appear.example-appear-active {
+  opacity: 1;
+  transition: opacity .5s ease-in;
 }
 /* end of playing card setup */
 /* .playingcard-box {
