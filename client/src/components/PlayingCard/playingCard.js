@@ -19,9 +19,9 @@ class PlayingCard extends React.Component {
         transitionAppear={true}
         transitionAppearTimeout={700}
         transitionEnter={false}
-        ransitionLeave={false}
+        transitionLeave={false}
       >
-        <div className="playingcard-box" style={this.props.style}>
+        <div className="playingcard-box">
           {this.state.imageStatus === "loading" ? (
             <p />
           ) : (
@@ -33,8 +33,8 @@ class PlayingCard extends React.Component {
             onLoad={this.handleOnLoad.bind(this)}
             onError={this.handleOnError.bind(this)}
             alt="Character Picture"
+            key={this.props.deck.thumbnail.path}
           />
-          {/* {this.state.imageStatus} */}
           <span>{this.props.deck.value}</span>
         </div>
       </CSSTransitionGroup>
