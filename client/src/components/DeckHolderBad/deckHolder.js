@@ -1,20 +1,31 @@
 import React, { Component } from "react";
 import PlayingCard from "../PlayingCard";
 
-const DeckHolderBad = props => (
-  <section className="deck-holder-row bad-guys">
-    <div className="deck-holder-box" style={{ visibility: "hidden" }} />
-    <div className="deck-holder-box bad-guys">
-      {/* {props.deck.length > 7 ? (
-        <PlayingCard
-          deck={props.deck[Math.floor(Math.random() * props.deck.length)]}
+class DeckHolderBad extends React.Component {
+  renderPlayingCards = () => {
+    if (this.props.deck.length > 0) {
+      return (
+        <PlayingCard deck={this.props.deck[0]} styles={this.props.styles} />
+      );
+    }
+  };
+  render() {
+    return (
+      <section className="deck-holder-row bad-guys">
+        <div
+          className="deck-holder-box bad-guys"
+          style={{ visibility: "hidden" }}
         />
-      ) : (
-        "no dice"
-      )} */}
-    </div>
-    <div className="deck-holder-box deck" />
-  </section>
-);
+        <div className="deck-holder-box bad-guys">
+          {this.renderPlayingCards()}
+        </div>
+        <div
+          className="deck-holder-box bad-guys deck"
+          onClick={this.props.action}
+        />
+      </section>
+    );
+  }
+}
 
 export default DeckHolderBad;

@@ -17,26 +17,45 @@ class PlayingCard extends React.Component {
       <CSSTransitionGroup
         transitionName="example"
         transitionAppear={true}
-        transitionAppearTimeout={700}
+        transitionAppearTimeout={500}
         transitionEnter={false}
         transitionLeave={false}
       >
-        <div className="playingcard-box">
-          {this.state.imageStatus === "loading" ? (
-            <p />
-          ) : (
-            <p>{this.props.deck.name}</p>
-          )}
-          <img
-            className="thumbnail"
-            src={this.props.deck.thumbnail.path + ".jpg"}
-            onLoad={this.handleOnLoad.bind(this)}
-            onError={this.handleOnError.bind(this)}
-            alt="Character Picture"
-            key={this.props.deck.thumbnail.path}
-          />
-          <span>{this.props.deck.value}</span>
-        </div>
+        {this.props.styles === false ? (
+          <div className="playingcard-box">
+            {this.state.imageStatus === "loading" ? (
+              <p />
+            ) : (
+              <p>{this.props.deck.name}</p>
+            )}
+            <img
+              className="thumbnail"
+              src={this.props.deck.thumbnail.path + ".jpg"}
+              onLoad={this.handleOnLoad.bind(this)}
+              onError={this.handleOnError.bind(this)}
+              alt="Character Picture"
+              key={this.props.deck.thumbnail.path}
+            />
+            <span>{this.props.deck.value}</span>
+          </div>
+        ) : (
+          <div className="playingcard-box" style={{ opacity: "0" }}>
+            {this.state.imageStatus === "loading" ? (
+              <p />
+            ) : (
+              <p>{this.props.deck.name}</p>
+            )}
+            <img
+              className="thumbnail"
+              src={this.props.deck.thumbnail.path + ".jpg"}
+              onLoad={this.handleOnLoad.bind(this)}
+              onError={this.handleOnError.bind(this)}
+              alt="Character Picture"
+              key={this.props.deck.thumbnail.path}
+            />
+            <span>{this.props.deck.value}</span>
+          </div>
+        )}
       </CSSTransitionGroup>
     );
   }

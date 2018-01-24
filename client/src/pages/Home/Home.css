@@ -39,6 +39,11 @@ img{
   position: absolute;
   top:50%
 }
+.compare-btn {
+  position: absolute;
+  top:50%;
+  right:0
+}
 .deck-holder-row{
   display: flex;
   justify-content: space-between;
@@ -78,6 +83,32 @@ img{
 }
 .deck:hover{
   cursor: pointer;
+}
+/* winning message on value compare */
+.display-message{
+  position: absolute;
+  display: flex;  
+  width:100%;
+  justify-content: center;
+  font-size: 40px;
+  top:27%
+}
+.display-message h2{
+  -webkit-animation:colorchange .5s infinite alternate
+}
+@-webkit-keyframes colorchange {
+  0% {
+    color: rgb(12, 12, 12);
+  }
+  40%{
+    color: rgb(12, 12, 12);    
+  }
+  50% {
+    color: #0ffa07;
+  }
+  100% {
+    color: #0ffa07;
+  }
 }
 /* playing card setup */
 .playingcard-box{
@@ -120,13 +151,13 @@ img{
     transform: translateX(0);
   }
 }
-/* .example-appear {
+.example-appear {
   opacity: 0.01;
 }
 
 .example-appear.example-appear-active {
   opacity: 1;
   transition: opacity 1s ease-in;
-} */
+}
 /* end of playing card setup */
 
