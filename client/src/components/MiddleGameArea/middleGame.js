@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PlayingCard from "../PlayingCard";
 
 const MiddleGame = props => (
   <section className="game-middle-row">

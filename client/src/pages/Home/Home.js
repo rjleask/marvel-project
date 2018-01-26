@@ -26,8 +26,9 @@ class Home extends Component {
       botCardNum: 8,
       currentCard: [],
       currentCardBad: [],
-      displayCard: false,
-      cardVanish: false,
+      war: false,
+      warArrBot: [],
+      warArrPlayer: [],
       displayMessage: false
     };
   }
@@ -63,7 +64,7 @@ class Home extends Component {
         botDeck: shuffledDeck.slice(8, 16)
       });
     } else {
-      console.log("decks are made");
+      console.log("decks are made", this.state.playerDeck);
     }
   };
   // shuffles input array
@@ -79,7 +80,10 @@ class Home extends Component {
   handleDeckClick() {
     let currentCard = [this.state.playerDeck.splice(0, 1)[0]];
     let currentCardBad = [this.state.botDeck.splice(0, 1)[0]];
-    console.log(this.state.playerDeck.length);
+    console.log(
+      "player" + this.state.playerDeck.length,
+      "bot" + this.state.botDeck.length
+    );
     this.setState({
       currentCard: currentCard,
       currentCardBad: currentCardBad
@@ -104,34 +108,74 @@ class Home extends Component {
       return <h2 className="display-message">It's War!!!</h2>;
     }
   };
-
-  compareCards() {
-    let botCard = this.state.currentCardBad[0];
-    let playerCard = this.state.currentCard[0];
-    if (botCard.value > playerCard.value) {
-      this.state.botDeck.push(botCard, playerCard);
-      let newValue = this.state.botDeck;
-      this.setState({ displayMessage: true });
-      setTimeout(() => {
+  setTimerMessage(letter, newValue) {
+    setTimeout(() => {
+      if (letter === "b") {
         this.setState({
           botDeck: newValue,
           displayMessage: false
         });
-      }, 4000);
-      console.log("Bot wins trick", this.state.botDeck);
-    } else if (playerCard.value > botCard.value) {
-      this.state.playerDeck.push(botCard, playerCard);
-      let newValue = this.state.playerDeck;
-      this.setState({ displayMessage: true });
-      setTimeout(() => {
+      } else {
         this.setState({
           playerDeck: newValue,
           displayMessage: false
         });
-      }, 4000);
-      console.log("Player wins trick", this.state.playerDeck);
+      }
+    }, 4000);
+  }
+  assembleWarDeck = (deckArr, warArr) => {
+    deckArr.forEach((character, index) => {
+      if (index <= 2 && deckArr.length >= 3)
+        warArr.push(deckArr.splice(index, 1));
+    });
+  };
+  war = () => {
+    this.assembleWarDeck(this.state.botDeck, this.state.warArrBot);
+    this.assembleWarDeck(this.state.playerDeck, this.state.warArrPlayer);
+    this.setState({ war: true });
+    console.log(this.state.warArrPlayer, this.state.warArrBot);
+  };
+  compareCards() {
+    if (!this.state.war) {
+      let botCard = this.state.currentCardBad[0];
+      let playerCard = this.state.currentCard[0];
+      // Bot wins condition
+      if (botCard.value > playerCard.value) {
+        this.state.botDeck.push(botCard, playerCard);
+        let newValue = this.state.botDeck;
+        this.setState({ displayMessage: true });
+        this.setTimerMessage("b", newValue);
+        console.log("Bot wins trick", this.state.botDeck);
+        // player wins condition
+      } else if (playerCard.value > botCard.value) {
+        this.state.playerDeck.push(botCard, playerCard);
+        let newValue = this.state.playerDeck;
+        this.setState({ displayMessage: true });
+        this.setTimerMessage("a", newValue);
+        console.log("Player wins trick", this.state.playerDeck);
+        // war
+      } else {
+        this.war();
+        console.log("war!");
+      }
     } else {
-      console.log("war!");
+      let warCardBot = this.state.warArrBot;
+      let warCardPlayer = this.state.warArrPlayer;
+      if (warCardBot[2][0].value > warCardPlayer[2][0].value) {
+        for (let i = 0; i < warCardPlayer.length; i++) {
+          this.state.botDeck.push(warCardPlayer[i][0]);
+        }
+        let newValue = this.state.botDeck;
+        this.setTimerMessage("b", newValue);
+        console.log("Bot Deck" + this.state.botDeck);
+      } else {
+        for (let i = 0; i < warCardBot.length; i++) {
+          this.state.playerDeck.push(warCardBot[i][0]);
+        }
+        let newValue = this.state.playerDeck;
+        this.setTimerMessage("a", newValue);
+        console.log("Player Deck" + this.state.playerDeck);
+      }
     }
   }
   // api call for the characters
@@ -152,15 +196,15 @@ class Home extends Component {
     if (this.state.gameStart) {
       return (
         <div>
-          <DeckHolderBad
-            deck={this.state.currentCardBad}
-            styles={this.state.cardVanish}
+          <DeckHolderBad deck={this.state.currentCardBad} />
+          <MiddleGame
+          // show={this.state.displayCards}
+          // deckBot={this.state.botDeck}
+          // deckPlayer={this.state.playerDeck}
           />
-          <MiddleGame />
           <DeckHolderGood
             action={this.handleDeckClick}
             deck={this.state.currentCard}
-            styles={this.state.cardVanish}
           />
         </div>
       );
@@ -178,7 +222,7 @@ class Home extends Component {
     return (
       <div className="game-wrapper">
         <ToggleCharacter onClick={this.toggleCharacter} />
-        {/* if the display message is set to tru render the display message */}
+        {/* if the display message is set to true render the display message */}
         {this.state.displayMessage ? this.displayMessage() : ""}
         <button className="compare-btn" onClick={this.compareCards}>
           Compare

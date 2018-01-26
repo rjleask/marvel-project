@@ -5,9 +5,7 @@ class DeckHolderGood extends React.Component {
   renderPlayingCards = () => {
     if (this.props.deck.length > 0) {
       // const indexer = this.props.deck.map((item, i) => {});
-      return (
-        <PlayingCard deck={this.props.deck[0]} styles={this.props.styles} />
-      );
+      return <PlayingCard deck={this.props.deck[0]} />;
     }
   };
   render() {

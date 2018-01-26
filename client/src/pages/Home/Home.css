@@ -94,9 +94,10 @@ img{
   top:27%
 }
 .display-message h2{
+  animation:colorchange .5s infinite alternate;
   -webkit-animation:colorchange .5s infinite alternate
 }
-@-webkit-keyframes colorchange {
+@keyframes colorchange {
   0% {
     color: rgb(12, 12, 12);
   }
@@ -157,7 +158,7 @@ img{
 
 .example-appear.example-appear-active {
   opacity: 1;
-  transition: opacity 1s ease-in;
+  transition: opacity 2s ease-in;
 }
 /* end of playing card setup */
 
