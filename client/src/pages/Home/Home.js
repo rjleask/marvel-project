@@ -29,7 +29,8 @@ class Home extends Component {
       war: false,
       warArrBot: [],
       warArrPlayer: [],
-      displayMessage: false
+      displayMessage: false,
+      warCardCounter: 0
     };
   }
   componentDidUpdate(prevProps, prevState) {
@@ -78,34 +79,54 @@ class Home extends Component {
   };
   // handler for when the deck is clicked for a new card
   handleDeckClick() {
-    let currentCard = [this.state.playerDeck.splice(0, 1)[0]];
-    let currentCardBad = [this.state.botDeck.splice(0, 1)[0]];
-    console.log(
-      "player" + this.state.playerDeck.length,
-      "bot" + this.state.botDeck.length
-    );
-    this.setState({
-      currentCard: currentCard,
-      currentCardBad: currentCardBad
-    });
+    if (!this.state.war) {
+      let currentCard = [this.state.playerDeck.splice(0, 1)[0]];
+      let currentCardBad = [this.state.botDeck.splice(0, 1)[0]];
+      console.log(
+        "player" + this.state.playerDeck.length,
+        "bot" + this.state.botDeck.length
+      );
+      this.setState({
+        currentCard: currentCard,
+        currentCardBad: currentCardBad
+      });
+    } else {
+      let counter = this.state.warCardCounter++;
+      this.setState({ warCardCounter: counter });
+    }
   }
   displayMessage = () => {
-    if (this.state.currentCardBad[0].value > this.state.currentCard[0].value) {
-      return (
-        <div className="display-message">
-          <h2>Computer wins trick!</h2>
-        </div>
-      );
-    } else if (
-      this.state.currentCard[0].value > this.state.currentCardBad[0].value
-    ) {
-      return (
-        <div className="display-message">
-          <h2>Player wins trick!</h2>
-        </div>
-      );
+    let computerWins = (
+      <div className="display-message">
+        <h2>Computer Wins trick!</h2>
+      </div>
+    );
+    let playerWins = (
+      <div className="display-message">
+        <h2>Player Wins trick!</h2>
+      </div>
+    );
+    if (!this.state.war) {
+      if (
+        this.state.currentCardBad[0].value > this.state.currentCard[0].value
+      ) {
+        return computerWins;
+      } else if (
+        this.state.currentCard[0].value > this.state.currentCardBad[0].value
+      ) {
+        return playerWins;
+      } else {
+        return <h2 className="display-message">It's War!!!</h2>;
+      }
     } else {
-      return <h2 className="display-message">It's War!!!</h2>;
+      if (
+        this.state.warArrBot[this.state.warArrBot.length - 1][0] >
+        this.state.warArrPlayer[this.state.warArrPlayer.length - 1][0]
+      ) {
+        return computerWins;
+      } else {
+        return playerWins;
+      }
     }
   };
   setTimerMessage(letter, newValue) {
@@ -113,12 +134,14 @@ class Home extends Component {
       if (letter === "b") {
         this.setState({
           botDeck: newValue,
-          displayMessage: false
+          displayMessage: false,
+          war: false
         });
       } else {
         this.setState({
           playerDeck: newValue,
-          displayMessage: false
+          displayMessage: false,
+          war: false
         });
       }
     }, 4000);
@@ -161,18 +184,23 @@ class Home extends Component {
     } else {
       let warCardBot = this.state.warArrBot;
       let warCardPlayer = this.state.warArrPlayer;
-      if (warCardBot[2][0].value > warCardPlayer[2][0].value) {
-        for (let i = 0; i < warCardPlayer.length; i++) {
-          this.state.botDeck.push(warCardPlayer[i][0]);
+      if (
+        warCardBot[warCardBot.length - 1][0].value >
+        warCardPlayer[warCardPlayer.length - 1][0].value
+      ) {
+        for (let i = 0; i < warCardPlayer.length && warCardBot.length; i++) {
+          this.state.botDeck.push(warCardPlayer[i][0], warCardBot[i][0]);
         }
         let newValue = this.state.botDeck;
+        this.setState({ displayMessage: true });
         this.setTimerMessage("b", newValue);
         console.log("Bot Deck" + this.state.botDeck);
       } else {
-        for (let i = 0; i < warCardBot.length; i++) {
-          this.state.playerDeck.push(warCardBot[i][0]);
+        for (let i = 0; i < warCardBot.length && warCardPlayer.length; i++) {
+          this.state.playerDeck.push(warCardBot[i][0], warCardPlayer[i][0]);
         }
         let newValue = this.state.playerDeck;
+        this.setState({ displayMessage: true });
         this.setTimerMessage("a", newValue);
         console.log("Player Deck" + this.state.playerDeck);
       }
@@ -198,9 +226,9 @@ class Home extends Component {
         <div>
           <DeckHolderBad deck={this.state.currentCardBad} />
           <MiddleGame
-          // show={this.state.displayCards}
-          // deckBot={this.state.botDeck}
-          // deckPlayer={this.state.playerDeck}
+            cardCount={this.state.warCardCounter}
+            deckBot={this.state.warArrBot}
+            deckPlayer={this.state.warArrPlayer}
           />
           <DeckHolderGood
             action={this.handleDeckClick}
