@@ -7,6 +7,8 @@ import ToggleCharacter from "../../components/ToggleCharacterButton";
 import DeckHolderBad from "../../components/DeckHolderBad";
 import DeckHolderGood from "../../components/DeckHolderGood";
 import MiddleGame from "../../components/MiddleGameArea";
+import { setTimeout } from "timers";
+import mainPicture from "./war.png";
 
 const axios = require("axios");
 
@@ -30,9 +32,11 @@ class Home extends Component {
       warArrBot: [],
       warArrPlayer: [],
       displayMessage: false,
-      warCardCounter: 0
+      warCardCounter: 0,
+      warDisplay: false
     };
   }
+
   componentDidUpdate(prevProps, prevState) {
     // checks if the characters have been loaded post render from api
     this.state.characters.length > 1
@@ -91,8 +95,7 @@ class Home extends Component {
         currentCardBad: currentCardBad
       });
     } else {
-      let counter = this.state.warCardCounter++;
-      this.setState({ warCardCounter: counter });
+      this.setState({ warCardCounter: this.state.warCardCounter + 1 });
     }
   }
   displayMessage = () => {
@@ -156,6 +159,7 @@ class Home extends Component {
     this.assembleWarDeck(this.state.botDeck, this.state.warArrBot);
     this.assembleWarDeck(this.state.playerDeck, this.state.warArrPlayer);
     this.setState({ war: true });
+    this.setState({ warDisplay: true });
     console.log(this.state.warArrPlayer, this.state.warArrBot);
   };
   compareCards() {
@@ -182,30 +186,33 @@ class Home extends Component {
         console.log("war!");
       }
     } else {
-      let warCardBot = this.state.warArrBot;
-      let warCardPlayer = this.state.warArrPlayer;
-      if (
-        warCardBot[warCardBot.length - 1][0].value >
-        warCardPlayer[warCardPlayer.length - 1][0].value
-      ) {
-        for (let i = 0; i < warCardPlayer.length && warCardBot.length; i++) {
-          this.state.botDeck.push(warCardPlayer[i][0], warCardBot[i][0]);
-        }
-        let newValue = this.state.botDeck;
-        this.setState({ displayMessage: true });
-        this.setTimerMessage("b", newValue);
-        console.log("Bot Deck" + this.state.botDeck);
-      } else {
-        for (let i = 0; i < warCardBot.length && warCardPlayer.length; i++) {
-          this.state.playerDeck.push(warCardBot[i][0], warCardPlayer[i][0]);
-        }
-        let newValue = this.state.playerDeck;
-        this.setState({ displayMessage: true });
-        this.setTimerMessage("a", newValue);
-        console.log("Player Deck" + this.state.playerDeck);
-      }
+      this.warCompareCards();
     }
   }
+  warCompareCards = () => {
+    let warCardBot = this.state.warArrBot;
+    let warCardPlayer = this.state.warArrPlayer;
+    if (
+      warCardBot[warCardBot.length - 1][0].value >
+      warCardPlayer[warCardPlayer.length - 1][0].value
+    ) {
+      for (let i = 0; i < warCardPlayer.length && warCardBot.length; i++) {
+        this.state.botDeck.push(warCardPlayer[i][0], warCardBot[i][0]);
+      }
+      let newValue = this.state.botDeck;
+      this.setState({ displayMessage: true });
+      this.setTimerMessage("b", newValue);
+      console.log("Bot Deck" + this.state.botDeck);
+    } else {
+      for (let i = 0; i < warCardBot.length && warCardPlayer.length; i++) {
+        this.state.playerDeck.push(warCardBot[i][0], warCardPlayer[i][0]);
+      }
+      let newValue = this.state.playerDeck;
+      this.setState({ displayMessage: true });
+      this.setTimerMessage("a", newValue);
+      console.log("Player Deck" + this.state.playerDeck);
+    }
+  };
   // api call for the characters
   loadAllCharacters = () => {
     API.getAllCharacters()
@@ -222,13 +229,23 @@ class Home extends Component {
   renderGame = () => {
     // calls api and starts game if its not active
     if (this.state.gameStart) {
+      {
+        document.body.style =
+          "background-image:linear-gradient(to bottom, rgba(231, 8, 8,1), rgba(7, 7, 7,1), rgba(5, 9, 236,1));";
+      }
       return (
         <div>
+          {/* if the display message is set to true render the display message */}
+          {this.state.displayMessage ? this.displayMessage() : ""}
+          <button className="compare-btn" onClick={this.compareCards}>
+            VS
+          </button>
           <DeckHolderBad deck={this.state.currentCardBad} />
           <MiddleGame
             cardCount={this.state.warCardCounter}
             deckBot={this.state.warArrBot}
             deckPlayer={this.state.warArrPlayer}
+            display={this.state.warDisplay}
           />
           <DeckHolderGood
             action={this.handleDeckClick}
@@ -237,7 +254,21 @@ class Home extends Component {
         </div>
       );
     } else {
-      return <TestButton onClick={this.loadAllCharacters} />;
+      {
+        document.body.style =
+          "background-image:url('http://legionofleia.com/wp-content/uploads/Marvel_Logo.jpg');";
+      }
+      return (
+        <div className="page-intro">
+          <div className="nav-top title">The Card Game</div>
+          <div className="title-img-box">
+            <img className="title-img" src={mainPicture} />
+          </div>
+          <div className="nav-bot title">
+            <TestButton onClick={this.loadAllCharacters} />
+          </div>
+        </div>
+      );
     }
   };
   toggleCharacter = () => {
@@ -247,28 +278,7 @@ class Home extends Component {
   };
 
   render() {
-    return (
-      <div className="game-wrapper">
-        <ToggleCharacter onClick={this.toggleCharacter} />
-        {/* if the display message is set to true render the display message */}
-        {this.state.displayMessage ? this.displayMessage() : ""}
-        <button className="compare-btn" onClick={this.compareCards}>
-          Compare
-        </button>
-        {/* toggle display of character navbar */}
-        <section
-          className={
-            this.state.isHidden
-              ? "flex-playerbot-row disappear"
-              : "flex-playerbot-row reappear"
-          }
-        >
-          <div className="playerbot-character-box" />
-        </section>
-        {/* end of navbar */}
-        {this.renderGame()}
-      </div>
-    );
+    return <div className="game-wrapper">{this.renderGame()}</div>;
   }
 }
 export default Home;

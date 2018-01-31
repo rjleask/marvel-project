@@ -1,16 +1,48 @@
 body{
   margin:0;
   padding:0;
+  background-size:100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  font-family: 'Bangers', cursive;
+}
+img{
+  max-width: 100%;
+  max-height: auto;
 }
 .game-wrapper{
   height: 100vh;
   display: flex;
   flex-direction: column;
 }
-img{
-  max-width: 100%;
-  max-height: auto;
+.page-intro{
+  width:100%;
+  height:100vh;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
+.title-img-box{
+  width:100%;
+  height:530px;
+  animation:fadeInOut 10s infinite;
+}
+
+.title-img{
+  width:100%;
+  height:100%
+}
+.title{
+  background:red;
+  width:100%;
+  flex:1;
+  font-size: 35px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
 .flex-playerbot-row{
   display: flex;
   justify-content: center;
@@ -25,7 +57,7 @@ img{
   width: 200px;
   border: 1px solid red;
 }
-.disappear{
+/* .disappear{
   transition: all 0.5s ease-in-out;
   max-height: 0;
   overflow: hidden;
@@ -34,15 +66,37 @@ img{
   transition: all 0.5s ease-in-out;
   overflow: hidden;
   max-height: 600px;
+} */
+/* play game button */
+.btn-danger{
+  font-size: 35px;
+  font-family: 'Bangers', cursive;
+  background:red;
 }
-.toggle-btn {
-  position: absolute;
-  top:50%
+.btn-danger:hover{
+  cursor: pointer;
+  background:rgb(190, 186, 186);
 }
 .compare-btn {
   position: absolute;
-  top:50%;
-  right:0
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+  margin:auto;
+  height:10%;
+  width:10%;
+  font-family: 'Bangers', cursive;
+  font-size: 30px;
+  background:rgba(255,255,255,0);
+  color:white;
+  border:1px solid white;
+}
+.compare-btn:hover{
+  background:white;
+  color:black;
+  cursor: pointer;
+  z-index:20;
 }
 .deck-holder-row{
   display: flex;
@@ -68,6 +122,10 @@ img{
   height: 210px;
   width: 200px;
   border: 1px solid red;
+}
+.third {
+  box-shadow: 0px 0px 10px 7px rgb(0, 255, 13), 0px 0px 10px 7px #fcfcfc;
+
 }
 /* end middle area */
 .bad-guys{
@@ -97,6 +155,18 @@ img{
   animation:colorchange .5s infinite alternate;
   -webkit-animation:colorchange .5s infinite alternate
 }
+@keyframes fadeInOut{
+  0% {
+    opacity:1
+  }
+ 50%{
+   opacity:0.9
+
+ }
+  100%{
+    opacity:1
+  }
+}
 @keyframes colorchange {
   0% {
     color: rgb(12, 12, 12);
@@ -113,6 +183,7 @@ img{
 }
 /* playing card setup */
 .playingcard-box{
+  animation:1s ease-out 0s slideInFromLeft;      
   border: 14px solid black;
   width: 80%;
   margin: 0 auto;
@@ -121,7 +192,7 @@ img{
   position: relative;
   overflow: hidden;
 }
-.playingcard-box p{
+.character-name{
   margin:0;
   padding: 0;
   text-align: center;
@@ -130,7 +201,7 @@ img{
   font-size: 20px;
   background: rgb(11, 243, 11);
 }
-.playingcard-box span{
+.value{
   position: absolute;
   bottom:0;
   right:0;
@@ -141,24 +212,65 @@ img{
   color:rgb(11, 243, 11);
   background: black;
 }
-.thumbnail{
-  animation:1s ease-out 0s slideInFromLeft
+/* playing card classes toggleing animation */
+.one{
+  animation:2s ease-in 0s fadeIn;
+  border: 14px solid black;
+  width: 80%;
+  margin: 0 auto;
+  border-radius: 4%;
+  height: 178px;
+  position: relative;
+  overflow: hidden;
+}
+.two{
+  animation:3s ease-in 0s fadeIn;
+  border: 14px solid black;
+  width: 80%;
+  margin: 0 auto;
+  border-radius: 4%;
+  height: 178px;
+  position: relative;
+  overflow: hidden;
+}
+.three{
+  animation:2s ease-in 0s slideInFromLeft;
+  border: 14px solid black;
+  width: 80%;
+  margin: 0 auto;
+  border-radius: 4%;
+  height: 178px;
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0.01;
+  }
+  100%{
+    opacity:1;
+  }
 }
 @keyframes slideInFromLeft {
   0% {
     transform: translateX(-100%);
+    opacity:0.01;
   }
   100% {
     transform: translateX(0);
+    opacity:1;
   }
 }
-.example-appear {
-  opacity: 0.01;
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.01;
+  }
+  
 }
 
-.example-appear.example-appear-active {
-  opacity: 1;
-  transition: opacity 2s ease-in;
-}
 /* end of playing card setup */
 
