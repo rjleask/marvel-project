@@ -18,13 +18,6 @@ export default {
       "&limit=16";
 
     return axios.get(url).then(res => {
-      // let characters = [];
-      // res.data.data.results.forEach(character => {
-      //   characters.push(character);
-      // });
-      // // characters.forEach((character) => {
-      // // //   if(character.)
-      // // // })
       return res.data.data.results;
     });
   }

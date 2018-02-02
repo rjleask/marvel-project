@@ -3,11 +3,12 @@ import { Link } from "react-router-dom";
 import "./Home.css";
 import TestButton from "../../components/TestButton";
 import API from "../../utils/API.js";
-import ToggleCharacter from "../../components/ToggleCharacterButton";
+// import ToggleCharacter from "../../components/ToggleCharacterButton";
 import DeckHolderBad from "../../components/DeckHolderBad";
 import DeckHolderGood from "../../components/DeckHolderGood";
 import MiddleGame from "../../components/MiddleGameArea";
 import { setTimeout } from "timers";
+import MessageDisplay from "../../components/MessageDisplay";
 import mainPicture from "./war.png";
 
 const axios = require("axios");
@@ -19,13 +20,10 @@ class Home extends Component {
     this.compareCards = this.compareCards.bind(this);
     this.state = {
       characters: [],
-      hasData: false,
       isHidden: true,
       gameStart: false,
       playerDeck: [],
-      playerCardNum: 8,
       botDeck: [],
-      botCardNum: 8,
       currentCard: [],
       currentCardBad: [],
       war: false,
@@ -33,7 +31,9 @@ class Home extends Component {
       warArrPlayer: [],
       displayMessage: false,
       warCardCounter: 0,
-      warDisplay: false
+      warDisplay: false,
+      message: "none",
+      endGame: false
     };
   }
 
@@ -84,6 +84,9 @@ class Home extends Component {
   // handler for when the deck is clicked for a new card
   handleDeckClick() {
     if (!this.state.war) {
+      if (this.state.playerDeck.length < 1 || this.state.botDeck.length < 1) {
+        this.setState({ gameEnd: true });
+      }
       let currentCard = [this.state.playerDeck.splice(0, 1)[0]];
       let currentCardBad = [this.state.botDeck.splice(0, 1)[0]];
       console.log(
@@ -98,7 +101,7 @@ class Home extends Component {
       this.setState({ warCardCounter: this.state.warCardCounter + 1 });
     }
   }
-  displayMessage = () => {
+  displayMessage = param => {
     let computerWins = (
       <div className="display-message">
         <h2>Computer Wins trick!</h2>
@@ -109,7 +112,7 @@ class Home extends Component {
         <h2>Player Wins trick!</h2>
       </div>
     );
-    if (!this.state.war) {
+    if (!this.state.war && !this.state.endGame) {
       if (
         this.state.currentCardBad[0].value > this.state.currentCard[0].value
       ) {
@@ -121,6 +124,7 @@ class Home extends Component {
       } else {
         return <h2 className="display-message">It's War!!!</h2>;
       }
+    } else if (this.state.endGame) {
     } else {
       if (
         this.state.warArrBot[this.state.warArrBot.length - 1][0] >
@@ -140,12 +144,14 @@ class Home extends Component {
           displayMessage: false,
           war: false
         });
-      } else {
+      } else if (letter === "a") {
         this.setState({
           playerDeck: newValue,
           displayMessage: false,
           war: false
         });
+      } else {
+        this.setState({ displayMessage: false });
       }
     }, 4000);
   }
@@ -158,8 +164,8 @@ class Home extends Component {
   war = () => {
     this.assembleWarDeck(this.state.botDeck, this.state.warArrBot);
     this.assembleWarDeck(this.state.playerDeck, this.state.warArrPlayer);
-    this.setState({ war: true });
-    this.setState({ warDisplay: true });
+    this.setState({ displayMessage: true, message: "Warrrrr!!!", war: true });
+    this.setTimerMessage("c", "war");
     console.log(this.state.warArrPlayer, this.state.warArrBot);
   };
   compareCards() {
@@ -170,14 +176,17 @@ class Home extends Component {
       if (botCard.value > playerCard.value) {
         this.state.botDeck.push(botCard, playerCard);
         let newValue = this.state.botDeck;
-        this.setState({ displayMessage: true });
+        this.setState({
+          displayMessage: true,
+          message: "Computer Wins Trick!"
+        });
         this.setTimerMessage("b", newValue);
         console.log("Bot wins trick", this.state.botDeck);
         // player wins condition
       } else if (playerCard.value > botCard.value) {
         this.state.playerDeck.push(botCard, playerCard);
         let newValue = this.state.playerDeck;
-        this.setState({ displayMessage: true });
+        this.setState({ displayMessage: true, message: "Player Wins Trick!" });
         this.setTimerMessage("a", newValue);
         console.log("Player wins trick", this.state.playerDeck);
         // war
@@ -200,7 +209,7 @@ class Home extends Component {
         this.state.botDeck.push(warCardPlayer[i][0], warCardBot[i][0]);
       }
       let newValue = this.state.botDeck;
-      this.setState({ displayMessage: true });
+      this.setState({ displayMessage: true, message: "Computer Wins Trick!" });
       this.setTimerMessage("b", newValue);
       console.log("Bot Deck" + this.state.botDeck);
     } else {
@@ -208,7 +217,7 @@ class Home extends Component {
         this.state.playerDeck.push(warCardBot[i][0], warCardPlayer[i][0]);
       }
       let newValue = this.state.playerDeck;
-      this.setState({ displayMessage: true });
+      this.setState({ displayMessage: true, message: "Player Wins Trick!" });
       this.setTimerMessage("a", newValue);
       console.log("Player Deck" + this.state.playerDeck);
     }
@@ -225,6 +234,16 @@ class Home extends Component {
       })
       .catch(err => console.log(err));
   };
+  endGame = () => {
+    if (this.state.playerDeck.length < 1) {
+      this.setState({ displayMessage: true, message: "Computer wins game!" });
+      return (
+        <div className="new-game">
+          <button>new game?</button>
+        </div>
+      );
+    }
+  };
   // renders the game
   renderGame = () => {
     // calls api and starts game if its not active
@@ -236,13 +255,21 @@ class Home extends Component {
       return (
         <div>
           {/* if the display message is set to true render the display message */}
-          {this.state.displayMessage ? this.displayMessage() : ""}
+          {this.state.endGame ? this.endGame() : ""}
+          {this.state.displayMessage ? (
+            <MessageDisplay
+              message={this.state.message}
+              war={this.state.war}
+              endGame={this.state.endGame}
+            />
+          ) : (
+            ""
+          )}
           <button className="compare-btn" onClick={this.compareCards}>
             VS
           </button>
           <DeckHolderBad deck={this.state.currentCardBad} />
           <MiddleGame
-            cardCount={this.state.warCardCounter}
             deckBot={this.state.warArrBot}
             deckPlayer={this.state.warArrPlayer}
             display={this.state.warDisplay}
@@ -270,11 +297,6 @@ class Home extends Component {
         </div>
       );
     }
-  };
-  toggleCharacter = () => {
-    this.setState({
-      isHidden: !this.state.isHidden
-    });
   };
 
   render() {

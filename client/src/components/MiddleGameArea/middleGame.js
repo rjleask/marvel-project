@@ -26,23 +26,23 @@ const MiddleGame = props => (
             display={props.display}
           />
         </div>
-        <div className="middle-card-boxes first">
+        <div className="middle-card-boxes first middle-good">
           <PlayingCard
             deck={props.deckPlayer[0][0]}
             cat="one"
             display={props.display}
           />
         </div>
-        <div className="middle-card-boxes second">
+        <div className="middle-card-boxes second middle-good">
           <PlayingCard
             deck={props.deckPlayer[1][0]}
             cat="two"
             display={props.display}
           />
         </div>
-        <div className="middle-card-boxes third">
+        <div className="middle-card-boxes third middle-good">
           <PlayingCard
-            deck={props.deckPlayer[props.deckBot.length - 1][0]}
+            deck={props.deckPlayer[props.deckPlayer.length - 1][0]}
             cat="three"
             display={props.display}
           />
@@ -53,9 +53,9 @@ const MiddleGame = props => (
         <div className="middle-card-boxes" />
         <div className="middle-card-boxes" />
         <div className="middle-card-boxes" />
-        <div className="middle-card-boxes" />
-        <div className="middle-card-boxes" />
-        <div className="middle-card-boxes" />
+        <div className="middle-card-boxes middle-good" />
+        <div className="middle-card-boxes middle-good" />
+        <div className="middle-card-boxes middle-good" />
       </section>
     )}
   </section>
