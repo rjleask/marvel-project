@@ -142,13 +142,15 @@ class Home extends Component {
         this.setState({
           botDeck: newValue,
           displayMessage: false,
-          war: false
+          war: false,
+          warDisplay: false
         });
       } else if (letter === "a") {
         this.setState({
           playerDeck: newValue,
           displayMessage: false,
-          war: false
+          war: false,
+          warDisplay: false
         });
       } else {
         this.setState({ displayMessage: false });
@@ -164,7 +166,12 @@ class Home extends Component {
   war = () => {
     this.assembleWarDeck(this.state.botDeck, this.state.warArrBot);
     this.assembleWarDeck(this.state.playerDeck, this.state.warArrPlayer);
-    this.setState({ displayMessage: true, message: "Warrrrr!!!", war: true });
+    this.setState({
+      displayMessage: true,
+      message: "Warrrrr!!!",
+      war: true,
+      warDisplay: true
+    });
     this.setTimerMessage("c", "war");
     console.log(this.state.warArrPlayer, this.state.warArrBot);
   };
@@ -236,13 +243,15 @@ class Home extends Component {
   };
   endGame = () => {
     if (this.state.playerDeck.length < 1) {
-      this.setState({ displayMessage: true, message: "Computer wins game!" });
-      return (
-        <div className="new-game">
-          <button>new game?</button>
-        </div>
-      );
+      this.setState({ displayMessage: true, message: "Computer Wins Game!" });
+    } else if (this.state.botDeck.length < 1) {
+      this.setState({ displayMessage: true, message: "Player Wins Game!" });
     }
+    return (
+      <div className="new-game">
+        <button>new game?</button>
+      </div>
+    );
   };
   // renders the game
   renderGame = () => {
