@@ -20,9 +20,11 @@ class DeckHolderGood extends React.Component {
           {this.renderPlayingCards()}
         </div>
         <div
-          className="deck-holder-box good-guys"
-          style={{ visibility: "hidden" }}
-        />
+          className="deck-holder-box good-guys score-box"
+          // style={{ visibility: "hidden" }}
+        >
+          <p>{this.props.numCards}</p>
+        </div>
       </section>
     );
   }

@@ -101,41 +101,6 @@ class Home extends Component {
       this.setState({ warCardCounter: this.state.warCardCounter + 1 });
     }
   }
-  // displayMessage = param => {
-  //   let computerWins = (
-  //     <div className="display-message">
-  //       <h2>Computer Wins trick!</h2>
-  //     </div>
-  //   );
-  //   let playerWins = (
-  //     <div className="display-message">
-  //       <h2>Player Wins trick!</h2>
-  //     </div>
-  //   );
-  //   if (!this.state.war && !this.state.endGame) {
-  //     if (
-  //       this.state.currentCardBad[0].value > this.state.currentCard[0].value
-  //     ) {
-  //       return computerWins;
-  //     } else if (
-  //       this.state.currentCard[0].value > this.state.currentCardBad[0].value
-  //     ) {
-  //       return playerWins;
-  //     } else {
-  //       return <h2 className="display-message">It's War!!!</h2>;
-  //     }
-  //   } else if (this.state.endGame) {
-  //   } else {
-  //     if (
-  //       this.state.warArrBot[this.state.warArrBot.length - 1][0] >
-  //       this.state.warArrPlayer[this.state.warArrPlayer.length - 1][0]
-  //     ) {
-  //       return computerWins;
-  //     } else {
-  //       return playerWins;
-  //     }
-  //   }
-  // };
   setTimerMessage(letter, newValue) {
     setTimeout(() => {
       if (letter === "b") {
@@ -143,24 +108,31 @@ class Home extends Component {
           botDeck: newValue,
           displayMessage: false,
           war: false,
-          warDisplay: false
+          warDisplay: false,
+          currentCard: [],
+          currentCardBad: [],
+          warArrBot: [],
+          warArrPlayer: []
         });
       } else if (letter === "a") {
         this.setState({
           playerDeck: newValue,
           displayMessage: false,
           war: false,
-          warDisplay: false
+          warDisplay: false,
+          currentCard: [],
+          currentCardBad: [],
+          warArrBot: [],
+          warArrPlayer: []
         });
       } else {
         this.setState({ displayMessage: false });
       }
-    }, 4000);
+    }, 3000);
   }
   assembleWarDeck = (deckArr, warArr) => {
     deckArr.forEach((character, index) => {
-      if (index <= 2 && deckArr.length >= 3)
-        warArr.push(deckArr.splice(index, 1));
+      if (index <= 2) warArr.push(deckArr.splice(index, 1));
     });
   };
   war = () => {
@@ -277,7 +249,10 @@ class Home extends Component {
           <button className="compare-btn" onClick={this.compareCards}>
             VS
           </button>
-          <DeckHolderBad deck={this.state.currentCardBad} />
+          <DeckHolderBad
+            deck={this.state.currentCardBad}
+            numCards={this.state.botDeck.length}
+          />
           <MiddleGame
             deckBot={this.state.warArrBot}
             deckPlayer={this.state.warArrPlayer}
@@ -286,6 +261,7 @@ class Home extends Component {
           <DeckHolderGood
             action={this.handleDeckClick}
             deck={this.state.currentCard}
+            numCards={this.state.playerDeck.length}
           />
         </div>
       );

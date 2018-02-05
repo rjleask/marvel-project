@@ -6,11 +6,15 @@ const MiddleGame = props => (
     {props.deckBot.length > 0 ? (
       <section className="game-middle-row">
         <div className="middle-card-boxes third">
-          <PlayingCard
-            deck={props.deckBot[props.deckBot.length - 1][0]}
-            cat="three"
-            display={props.display}
-          />
+          {props.deckBot.length === 3 ? (
+            <PlayingCard
+              deck={props.deckBot[props.deckBot.length - 1][0]}
+              cat="three"
+              display={props.display}
+            />
+          ) : (
+            <div className="middle-card-boxes" />
+          )}
         </div>
         <div className="middle-card-boxes second">
           <PlayingCard

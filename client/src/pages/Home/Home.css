@@ -161,6 +161,13 @@ img{
   animation:colorchange .5s infinite alternate;
   -webkit-animation:colorchange .5s infinite alternate
 }
+/* display num cards */
+.score-box{
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+}
 
 @keyframes colorchange {
   0% {
