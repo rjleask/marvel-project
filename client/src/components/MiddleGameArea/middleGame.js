@@ -1,11 +1,17 @@
 import React, { Component } from "react";
 import PlayingCard from "../PlayingCard";
-
+// display playing card boxes depending on how many cards are in the war array
 const MiddleGame = props => (
   <section>
     {props.deckBot.length > 0 ? (
       <section className="game-middle-row">
-        <div className="middle-card-boxes third">
+        <div
+          className={
+            props.deckBot.length === 3
+              ? "middle-card-boxes third"
+              : "middle-card-boxes"
+          }
+        >
           {props.deckBot.length === 3 ? (
             <PlayingCard
               deck={props.deckBot[props.deckBot.length - 1][0]}
@@ -16,40 +22,84 @@ const MiddleGame = props => (
             <div className="middle-card-boxes" />
           )}
         </div>
-        <div className="middle-card-boxes second">
-          <PlayingCard
-            deck={props.deckBot[1][0]}
-            cat="two"
-            display={props.display}
-          />
+        <div
+          className={
+            props.deckBot.length === 2
+              ? "middle-card-boxes third"
+              : "middle-card-boxes second"
+          }
+        >
+          {props.deckBot.length >= 2 ? (
+            <PlayingCard
+              deck={props.deckBot[1][0]}
+              cat="two"
+              display={props.display}
+            />
+          ) : (
+            <div className="middle-card-boxes" />
+          )}
+          }
         </div>
-        <div className="middle-card-boxes first">
+        <div
+          className={
+            props.deckBot.length === 1
+              ? "middle-card-boxes third"
+              : "middle-card-boxes first"
+          }
+        >
           <PlayingCard
             deck={props.deckBot[0][0]}
             cat="one"
             display={props.display}
           />
         </div>
-        <div className="middle-card-boxes first middle-good">
+        <div
+          className={
+            props.deckPlayer.length === 1
+              ? "middle-card-boxes third middle-good"
+              : "middle-card-boxes middle-good first"
+          }
+        >
           <PlayingCard
             deck={props.deckPlayer[0][0]}
             cat="one"
             display={props.display}
           />
         </div>
-        <div className="middle-card-boxes second middle-good">
-          <PlayingCard
-            deck={props.deckPlayer[1][0]}
-            cat="two"
-            display={props.display}
-          />
+        <div
+          className={
+            props.deckPlayer.length === 2
+              ? "middle-card-boxes third middle-good"
+              : "middle-card-boxes second middle-good"
+          }
+        >
+          {props.deckPlayer.length >= 2 ? (
+            <PlayingCard
+              deck={props.deckPlayer[1][0]}
+              cat="two"
+              display={props.display}
+            />
+          ) : (
+            <div className="middle-card-boxes middle-good" />
+          )}
         </div>
-        <div className="middle-card-boxes third middle-good">
-          <PlayingCard
-            deck={props.deckPlayer[props.deckPlayer.length - 1][0]}
-            cat="three"
-            display={props.display}
-          />
+
+        <div
+          className={
+            props.deckPlayer.length === 3
+              ? "middle-card-boxes third middle-good"
+              : "middle-card-boxes middle-good"
+          }
+        >
+          {props.deckPlayer.length === 3 ? (
+            <PlayingCard
+              deck={props.deckPlayer[props.deckPlayer.length - 1][0]}
+              cat="three"
+              display={props.display}
+            />
+          ) : (
+            <div className="middle-card-boxes middle-good" />
+          )}
         </div>
       </section>
     ) : (

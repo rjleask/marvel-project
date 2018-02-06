@@ -131,9 +131,14 @@ class Home extends Component {
     }, 3000);
   }
   assembleWarDeck = (deckArr, warArr) => {
-    deckArr.forEach((character, index) => {
-      if (index <= 2) warArr.push(deckArr.splice(index, 1));
-    });
+    // deckArr.forEach((character, index) => {
+    //   if (index <= 2) warArr.push(deckArr.splice(index, 1));
+    // });
+    for (let i = 0; i < deckArr.length; i++) {
+      if (deckArr.length <= 3) {
+        warArr.push(deckArr.splice(i, 1));
+      } else if (i < 3 && deckArr.length > 3) warArr.push(deckArr.splice(i, 1));
+    }
   };
   war = () => {
     this.assembleWarDeck(this.state.botDeck, this.state.warArrBot);
