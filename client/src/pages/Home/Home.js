@@ -21,6 +21,7 @@ class Home extends Component {
     this.state = {
       characters: [],
       isHidden: true,
+      loaded: false,
       gameStart: false,
       playerDeck: [],
       botDeck: [],
@@ -39,38 +40,42 @@ class Home extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     // checks if the characters have been loaded post render from api
-    this.state.characters.length > 1
-      ? this.makeTheDecks()
-      : console.log("Not here Yet");
-    // this.state.gameStart ? this.startGame() : console.log("game not ready yet");
+    if (!this.state.loaded && this.state.characters.length > 1) {
+      this.makeTheDecks();
+      this.setState({ loaded: true });
+    }
+    // this.state.characters.length > 1
+    //   ? this.makeTheDecks()
+    //   : console.log("Not here Yet");
+    // // this.state.gameStart ? this.startGame() : console.log("game not ready yet");
   }
   makeTheDecks = () => {
-    if (this.state.playerDeck.length < 1) {
-      console.log(this.state.characters);
-      const deckInitial = [];
-      let deckFinal;
-      this.state.characters.forEach(character => {
-        deckInitial.push(character);
-      });
-      let sectionArr1 = deckInitial.splice(0, 4);
-      let sectionArr2 = deckInitial.splice(0, 4);
-      let sectionArr3 = deckInitial.splice(0, 4);
-      for (let i = 0; i < 4; i++) {
-        sectionArr1[i].value = i + 1;
-        sectionArr2[i].value = i + 1;
-        sectionArr3[i].value = i + 1;
-        deckInitial[i].value = i + 1;
-      }
-      deckFinal = deckInitial.concat(sectionArr1, sectionArr2, sectionArr3);
-      let shuffledDeck = this.shuffle(deckFinal);
-      // add player and bot decks
-      this.setState({
-        playerDeck: shuffledDeck.slice(0, 8),
-        botDeck: shuffledDeck.slice(8, 16)
-      });
-    } else {
-      console.log("decks are made", this.state.playerDeck);
+    // if (this.state.playerDeck.length < 1) {
+    console.log(this.state.characters);
+    const deckInitial = [];
+    let deckFinal;
+    this.state.characters.forEach(character => {
+      deckInitial.push(character);
+    });
+    let sectionArr1 = deckInitial.splice(0, 4);
+    let sectionArr2 = deckInitial.splice(0, 4);
+    let sectionArr3 = deckInitial.splice(0, 4);
+    for (let i = 0; i < 4; i++) {
+      sectionArr1[i].value = i + 1;
+      sectionArr2[i].value = i + 1;
+      sectionArr3[i].value = i + 1;
+      deckInitial[i].value = i + 1;
     }
+    deckFinal = deckInitial.concat(sectionArr1, sectionArr2, sectionArr3);
+    let shuffledDeck = this.shuffle(deckFinal);
+    // add player and bot decks
+    this.setState({
+      playerDeck: shuffledDeck.slice(0, 8),
+      botDeck: shuffledDeck.slice(8, 16)
+    });
+    // } else {
+    //   console.log("decks are made", this.state.playerDeck);
+    // }
   };
   // shuffles input array
   shuffle = ([...arr]) => {
@@ -83,12 +88,12 @@ class Home extends Component {
   };
   // handler for when the deck is clicked for a new card
   handleDeckClick() {
-    if (!this.state.war) {
-      if (this.state.playerDeck.length < 1 || this.state.botDeck.length < 1) {
-        this.setState({ gameEnd: true });
-      }
+    if (!this.state.war && this.state.currentCard.length === 0) {
       let currentCard = [this.state.playerDeck.splice(0, 1)[0]];
       let currentCardBad = [this.state.botDeck.splice(0, 1)[0]];
+      if (this.state.playerDeck.length < 1 || this.state.botDeck.length < 1) {
+        this.setState({ endGame: true });
+      }
       console.log(
         "player" + this.state.playerDeck.length,
         "bot" + this.state.botDeck.length
@@ -98,7 +103,7 @@ class Home extends Component {
         currentCardBad: currentCardBad
       });
     } else {
-      this.setState({ warCardCounter: this.state.warCardCounter + 1 });
+      // this.setState({ warCardCounter: this.state.warCardCounter + 1 });
     }
   }
   setTimerMessage(letter, newValue) {
@@ -128,17 +133,27 @@ class Home extends Component {
       } else {
         this.setState({ displayMessage: false });
       }
-    }, 3000);
+    }, 2000);
   }
+  // make the war arrays by splicing them from the decks
   assembleWarDeck = (deckArr, warArr) => {
     // deckArr.forEach((character, index) => {
     //   if (index <= 2) warArr.push(deckArr.splice(index, 1));
     // });
-    for (let i = 0; i < deckArr.length; i++) {
-      if (deckArr.length <= 3) {
+    for (let i = 0; i < 3; i++) {
+      if (deckArr.length > 0) {
         warArr.push(deckArr.splice(i, 1));
-      } else if (i < 3 && deckArr.length > 3) warArr.push(deckArr.splice(i, 1));
+      }
     }
+
+    // for (let i = 0; i < deckArr.length; i++) {
+    //   if (deckArr.length <= 3) {
+    //     warArr.push(deckArr.splice(i, i));
+    //   } else if (i < 3 && deckArr.length > 3) {
+    //     warArr.push(deckArr.splice(i, 1));
+    //   }
+    // }
+    console.log("deck after its made" + deckArr);
   };
   war = () => {
     this.assembleWarDeck(this.state.botDeck, this.state.warArrBot);
@@ -154,53 +169,59 @@ class Home extends Component {
   };
   compareCards() {
     if (!this.state.war) {
-      let botCard = this.state.currentCardBad[0];
-      let playerCard = this.state.currentCard[0];
-      // Bot wins condition
-      if (botCard.value > playerCard.value) {
-        this.state.botDeck.push(botCard, playerCard);
-        let newValue = this.state.botDeck;
-        this.setState({
-          displayMessage: true,
-          message: "Computer Wins Trick!"
-        });
-        this.setTimerMessage("b", newValue);
-        console.log("Bot wins trick", this.state.botDeck);
-        // player wins condition
-      } else if (playerCard.value > botCard.value) {
-        this.state.playerDeck.push(botCard, playerCard);
-        let newValue = this.state.playerDeck;
-        this.setState({ displayMessage: true, message: "Player Wins Trick!" });
-        this.setTimerMessage("a", newValue);
-        console.log("Player wins trick", this.state.playerDeck);
-        // war
-      } else {
-        this.war();
-        console.log("war!");
+      if (this.state.currentCard.length != 0) {
+        let botCard = this.state.currentCardBad[0];
+        let playerCard = this.state.currentCard[0];
+        // Bot wins condition
+        if (botCard.value > playerCard.value) {
+          this.state.botDeck.push(botCard, playerCard);
+          let newValue = this.state.botDeck;
+          this.setState({
+            displayMessage: true,
+            message: "Computer Wins Trick!"
+          });
+          this.setTimerMessage("b", newValue);
+          console.log("Bot wins trick", this.state.botDeck);
+          // player wins condition
+        } else if (playerCard.value > botCard.value) {
+          this.state.playerDeck.push(botCard, playerCard);
+          let newValue = this.state.playerDeck;
+          this.setState({
+            displayMessage: true,
+            message: "Player Wins Trick!"
+          });
+          this.setTimerMessage("a", newValue);
+          console.log("Player wins trick", this.state.playerDeck);
+          // war
+        } else {
+          this.war();
+          console.log("war!");
+        }
       }
     } else {
       this.warCompareCards();
     }
   }
   warCompareCards = () => {
-    let warCardBot = this.state.warArrBot;
-    let warCardPlayer = this.state.warArrPlayer;
+    var totalArr = this.state.warArrBot.concat(this.state.warArrPlayer);
     if (
-      warCardBot[warCardBot.length - 1][0].value >
-      warCardPlayer[warCardPlayer.length - 1][0].value
+      this.state.warArrBot[this.state.warArrBot.length - 1][0].value >
+      this.state.warArrPlayer[this.state.warArrPlayer.length - 1][0].value
     ) {
-      for (let i = 0; i < warCardPlayer.length && warCardBot.length; i++) {
-        this.state.botDeck.push(warCardPlayer[i][0], warCardBot[i][0]);
+      for (let i = 0; i < totalArr.length; i++) {
+        this.state.botDeck.push(totalArr[i][0]);
       }
+      totalArr = [];
       let newValue = this.state.botDeck;
       this.setState({ displayMessage: true, message: "Computer Wins Trick!" });
       this.setTimerMessage("b", newValue);
       console.log("Bot Deck" + this.state.botDeck);
     } else {
-      for (let i = 0; i < warCardBot.length && warCardPlayer.length; i++) {
-        this.state.playerDeck.push(warCardBot[i][0], warCardPlayer[i][0]);
+      for (let i = 0; i < totalArr.length; i++) {
+        this.state.playerDeck.push(totalArr[i][0]);
       }
       let newValue = this.state.playerDeck;
+      totalArr = [];
       this.setState({ displayMessage: true, message: "Player Wins Trick!" });
       this.setTimerMessage("a", newValue);
       console.log("Player Deck" + this.state.playerDeck);
@@ -233,7 +254,7 @@ class Home extends Component {
   // renders the game
   renderGame = () => {
     // calls api and starts game if its not active
-    if (this.state.gameStart) {
+    if (this.state.gameStart && !this.state.endGame) {
       {
         document.body.style =
           "background-image:linear-gradient(to bottom, rgba(231, 8, 8,1), rgba(7, 7, 7,1), rgba(5, 9, 236,1));";
@@ -241,7 +262,6 @@ class Home extends Component {
       return (
         <div>
           {/* if the display message is set to true render the display message */}
-          {this.state.endGame ? this.endGame() : ""}
           {this.state.displayMessage ? (
             <MessageDisplay
               message={this.state.message}
@@ -274,6 +294,9 @@ class Home extends Component {
       {
         document.body.style =
           "background-image:url('http://legionofleia.com/wp-content/uploads/Marvel_Logo.jpg');";
+        if (this.state.endGame) {
+          return <div className="end-game">{this.endGame()}</div>;
+        }
       }
       return (
         <div className="page-intro">

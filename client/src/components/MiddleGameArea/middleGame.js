@@ -38,7 +38,6 @@ const MiddleGame = props => (
           ) : (
             <div className="middle-card-boxes" />
           )}
-          }
         </div>
         <div
           className={
