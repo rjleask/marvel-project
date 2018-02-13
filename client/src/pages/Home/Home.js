@@ -135,25 +135,17 @@ class Home extends Component {
       }
     }, 2000);
   }
+  // assembleWarDeck(["a"],[]);
   // make the war arrays by splicing them from the decks
   assembleWarDeck = (deckArr, warArr) => {
-    // deckArr.forEach((character, index) => {
-    //   if (index <= 2) warArr.push(deckArr.splice(index, 1));
-    // });
-    for (let i = 0; i < 3; i++) {
-      if (deckArr.length > 0) {
-        warArr.push(deckArr.splice(i, 1));
-      }
-    }
-
-    // for (let i = 0; i < deckArr.length; i++) {
-    //   if (deckArr.length <= 3) {
-    //     warArr.push(deckArr.splice(i, i));
-    //   } else if (i < 3 && deckArr.length > 3) {
+    console.log(deckArr, warArr);
+    // for (let i = 0; i < 3; i++) {
+    //   if (deckArr.length > 0) {
     //     warArr.push(deckArr.splice(i, 1));
     //   }
     // }
-    console.log("deck after its made" + deckArr);
+    warArr.push(deckArr.splice(0, 3));
+    console.log(warArr, deckArr);
   };
   war = () => {
     this.assembleWarDeck(this.state.botDeck, this.state.warArrBot);
