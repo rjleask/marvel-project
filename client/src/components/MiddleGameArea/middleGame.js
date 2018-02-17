@@ -3,7 +3,7 @@ import PlayingCard from "../PlayingCard";
 // display playing card boxes depending on how many cards are in the war array
 const MiddleGame = props => (
   <section>
-    {props.deckBot.length > 0 ? (
+    {props.war ? (
       <section className="game-middle-row">
         <div
           className={
@@ -14,7 +14,7 @@ const MiddleGame = props => (
         >
           {props.deckBot.length === 3 ? (
             <PlayingCard
-              deck={props.deckBot[props.deckBot.length - 1][0]}
+              deck={props.deckBot[props.deckBot.length - 1]}
               cat="three"
               display={props.display}
             />
@@ -31,7 +31,7 @@ const MiddleGame = props => (
         >
           {props.deckBot.length >= 2 ? (
             <PlayingCard
-              deck={props.deckBot[1][0]}
+              deck={props.deckBot[1]}
               cat="two"
               display={props.display}
             />
@@ -47,7 +47,7 @@ const MiddleGame = props => (
           }
         >
           <PlayingCard
-            deck={props.deckBot[0][0]}
+            deck={props.deckBot[0]}
             cat="one"
             display={props.display}
           />
@@ -60,7 +60,7 @@ const MiddleGame = props => (
           }
         >
           <PlayingCard
-            deck={props.deckPlayer[0][0]}
+            deck={props.deckPlayer[0]}
             cat="one"
             display={props.display}
           />
@@ -74,7 +74,7 @@ const MiddleGame = props => (
         >
           {props.deckPlayer.length >= 2 ? (
             <PlayingCard
-              deck={props.deckPlayer[1][0]}
+              deck={props.deckPlayer[1]}
               cat="two"
               display={props.display}
             />
@@ -92,7 +92,7 @@ const MiddleGame = props => (
         >
           {props.deckPlayer.length === 3 ? (
             <PlayingCard
-              deck={props.deckPlayer[props.deckPlayer.length - 1][0]}
+              deck={props.deckPlayer[props.deckPlayer.length - 1]}
               cat="three"
               display={props.display}
             />

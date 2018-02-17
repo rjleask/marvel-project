@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import "./Home.css";
 import TestButton from "../../components/TestButton";
 import API from "../../utils/API.js";
-// import ToggleCharacter from "../../components/ToggleCharacterButton";
 import DeckHolderBad from "../../components/DeckHolderBad";
 import DeckHolderGood from "../../components/DeckHolderGood";
 import MiddleGame from "../../components/MiddleGameArea";
@@ -135,17 +134,11 @@ class Home extends Component {
       }
     }, 2000);
   }
-  // assembleWarDeck(["a"],[]);
   // make the war arrays by splicing them from the decks
   assembleWarDeck = (deckArr, warArr) => {
     console.log(deckArr, warArr);
-    // for (let i = 0; i < 3; i++) {
-    //   if (deckArr.length > 0) {
-    //     warArr.push(deckArr.splice(i, 1));
-    //   }
-    // }
     warArr.push(deckArr.splice(0, 3));
-    console.log(warArr, deckArr);
+    console.log(warArr[0], deckArr);
   };
   war = () => {
     this.assembleWarDeck(this.state.botDeck, this.state.warArrBot);
@@ -195,13 +188,19 @@ class Home extends Component {
     }
   }
   warCompareCards = () => {
-    var totalArr = this.state.warArrBot.concat(this.state.warArrPlayer);
+    var totalArr = this.state.warArrBot[0].concat(this.state.warArrPlayer[0]);
+    console.log(
+      "bot value " +
+        this.state.warArrBot[0][this.state.warArrBot.length - 1].value,
+      this.state.warArrPlayer[0][this.state.warArrPlayer.length - 1].value,
+      totalArr
+    );
     if (
-      this.state.warArrBot[this.state.warArrBot.length - 1][0].value >
-      this.state.warArrPlayer[this.state.warArrPlayer.length - 1][0].value
+      this.state.warArrBot[0][this.state.warArrBot[0].length - 1].value >
+      this.state.warArrPlayer[0][this.state.warArrPlayer[0].length - 1].value
     ) {
       for (let i = 0; i < totalArr.length; i++) {
-        this.state.botDeck.push(totalArr[i][0]);
+        this.state.botDeck.push(totalArr[i]);
       }
       totalArr = [];
       let newValue = this.state.botDeck;
@@ -210,7 +209,7 @@ class Home extends Component {
       console.log("Bot Deck" + this.state.botDeck);
     } else {
       for (let i = 0; i < totalArr.length; i++) {
-        this.state.playerDeck.push(totalArr[i][0]);
+        this.state.playerDeck.push(totalArr[i]);
       }
       let newValue = this.state.playerDeck;
       totalArr = [];
@@ -271,8 +270,9 @@ class Home extends Component {
             numCards={this.state.botDeck.length}
           />
           <MiddleGame
-            deckBot={this.state.warArrBot}
-            deckPlayer={this.state.warArrPlayer}
+            deckBot={this.state.warArrBot[0]}
+            deckPlayer={this.state.warArrPlayer[0]}
+            war={this.state.war}
             display={this.state.warDisplay}
           />
           <DeckHolderGood
@@ -288,19 +288,20 @@ class Home extends Component {
           "background-image:url('http://legionofleia.com/wp-content/uploads/Marvel_Logo.jpg');";
         if (this.state.endGame) {
           return <div className="end-game">{this.endGame()}</div>;
+        } else {
+          return (
+            <div className="page-intro">
+              <div className="nav-top title">The Card Game</div>
+              <div className="title-img-box">
+                <img className="title-img" src={mainPicture} />
+              </div>
+              <div className="nav-bot title">
+                <TestButton onClick={this.loadAllCharacters} />
+              </div>
+            </div>
+          );
         }
       }
-      return (
-        <div className="page-intro">
-          <div className="nav-top title">The Card Game</div>
-          <div className="title-img-box">
-            <img className="title-img" src={mainPicture} />
-          </div>
-          <div className="nav-bot title">
-            <TestButton onClick={this.loadAllCharacters} />
-          </div>
-        </div>
-      );
     }
   };
 
