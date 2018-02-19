@@ -32,6 +32,8 @@ class Home extends Component {
       displayMessage: false,
       warCardCounter: 0,
       warDisplay: false,
+      playerScore: 0,
+      computerScore: 0,
       message: "none",
       endGame: false
     };
@@ -163,6 +165,7 @@ class Home extends Component {
           let newValue = this.state.botDeck;
           this.setState({
             displayMessage: true,
+            computerScore: this.state.computerScore + 2,
             message: "Computer Wins Trick!"
           });
           this.setTimerMessage("b", newValue);
@@ -173,6 +176,7 @@ class Home extends Component {
           let newValue = this.state.playerDeck;
           this.setState({
             displayMessage: true,
+            playerScore: this.state.playerScore + 2,
             message: "Player Wins Trick!"
           });
           this.setTimerMessage("a", newValue);
@@ -189,6 +193,7 @@ class Home extends Component {
   }
   warCompareCards = () => {
     var totalArr = this.state.warArrBot[0].concat(this.state.warArrPlayer[0]);
+    let count = totalArr.length;
     console.log(
       "bot value " +
         this.state.warArrBot[0][this.state.warArrBot.length - 1].value,
@@ -204,7 +209,11 @@ class Home extends Component {
       }
       totalArr = [];
       let newValue = this.state.botDeck;
-      this.setState({ displayMessage: true, message: "Computer Wins Trick!" });
+      this.setState({
+        displayMessage: true,
+        message: "Computer Wins Trick!",
+        computerScore: this.state.computerScore + count
+      });
       this.setTimerMessage("b", newValue);
       console.log("Bot Deck" + this.state.botDeck);
     } else {
@@ -213,7 +222,11 @@ class Home extends Component {
       }
       let newValue = this.state.playerDeck;
       totalArr = [];
-      this.setState({ displayMessage: true, message: "Player Wins Trick!" });
+      this.setState({
+        displayMessage: true,
+        message: "Player Wins Trick!",
+        playerScore: this.state.playerScore + count
+      });
       this.setTimerMessage("a", newValue);
       console.log("Player Deck" + this.state.playerDeck);
     }
@@ -231,16 +244,14 @@ class Home extends Component {
       .catch(err => console.log(err));
   };
   endGame = () => {
+    return <button>new game?</button>;
+  };
+  endGameDisplay = () => {
     if (this.state.playerDeck.length < 1) {
-      this.setState({ displayMessage: true, message: "Computer Wins Game!" });
-    } else if (this.state.botDeck.length < 1) {
-      this.setState({ displayMessage: true, message: "Player Wins Game!" });
+      return "Computer Wins Game!";
+    } else {
+      return "Player Wins Game!";
     }
-    return (
-      <div className="new-game">
-        <button>new game?</button>
-      </div>
-    );
   };
   // renders the game
   renderGame = () => {
@@ -254,11 +265,7 @@ class Home extends Component {
         <div>
           {/* if the display message is set to true render the display message */}
           {this.state.displayMessage ? (
-            <MessageDisplay
-              message={this.state.message}
-              war={this.state.war}
-              endGame={this.state.endGame}
-            />
+            <MessageDisplay message={this.state.message} />
           ) : (
             ""
           )}
@@ -268,6 +275,7 @@ class Home extends Component {
           <DeckHolderBad
             deck={this.state.currentCardBad}
             numCards={this.state.botDeck.length}
+            computerScore={this.state.computerScore}
           />
           <MiddleGame
             deckBot={this.state.warArrBot[0]}
@@ -279,6 +287,7 @@ class Home extends Component {
             action={this.handleDeckClick}
             deck={this.state.currentCard}
             numCards={this.state.playerDeck.length}
+            playerScore={this.state.playerScore}
           />
         </div>
       );
@@ -287,7 +296,16 @@ class Home extends Component {
         document.body.style =
           "background-image:url('http://legionofleia.com/wp-content/uploads/Marvel_Logo.jpg');";
         if (this.state.endGame) {
-          return <div className="end-game">{this.endGame()}</div>;
+          return (
+            <div>
+              <MessageDisplay
+                message={this.state.message}
+                endGame={this.state.endGame}
+                endGameMsg={this.endGameDisplay()}
+              />
+              {this.endGame()}
+            </div>
+          );
         } else {
           return (
             <div className="page-intro">

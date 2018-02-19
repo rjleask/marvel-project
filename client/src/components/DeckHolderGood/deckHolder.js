@@ -23,7 +23,8 @@ class DeckHolderGood extends React.Component {
           className="deck-holder-box good-guys score-box"
           // style={{ visibility: "hidden" }}
         >
-          <p>{this.props.numCards}</p>
+          <p>Cards: {this.props.numCards}</p>
+          <p className="score">Player Score: {this.props.playerScore}</p>
         </div>
       </section>
     );

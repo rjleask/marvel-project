@@ -14,7 +14,8 @@ class DeckHolderBad extends React.Component {
           className="deck-holder-box bad-guys score-box"
           // style={{ visibility: "hidden" }}
         >
-          <p>{this.props.numCards}</p>
+          <p>Cards: {this.props.numCards}</p>
+          <p className="score">Computer Score: {this.props.computerScore}</p>
         </div>
 
         <div className="deck-holder-box bad-guys">
