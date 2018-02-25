@@ -6,7 +6,7 @@ import API from "../../utils/API.js";
 import DeckHolderBad from "../../components/DeckHolderBad";
 import DeckHolderGood from "../../components/DeckHolderGood";
 import MiddleGame from "../../components/MiddleGameArea";
-import { setTimeout } from "timers";
+// import { setTimeout } from "timers";
 import MessageDisplay from "../../components/MessageDisplay";
 import mainPicture from "./war.png";
 
