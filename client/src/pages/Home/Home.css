@@ -165,6 +165,22 @@ p{
   animation:colorchange .5s infinite alternate;
   -webkit-animation:colorchange .5s infinite alternate
 }
+.new-game-box{
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+}
+.new-game-btn{
+  margin-top: 10%;
+  padding: 1%;
+  background: white;
+  font-size: 30px;
+  border: none;
+  border-radius: 4px;
+}
+.new-game-btn:hover{
+  cursor: pointer;
+}
 /* display num cards */
 .score-box{
   display:flex;

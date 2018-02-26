@@ -17,6 +17,7 @@ class Home extends Component {
     super(props);
     this.handleDeckClick = this.handleDeckClick.bind(this);
     this.compareCards = this.compareCards.bind(this);
+    this.handleNewGame = this.handleNewGame.bind(this);
     this.state = {
       characters: [],
       isHidden: true,
@@ -45,10 +46,6 @@ class Home extends Component {
       this.makeTheDecks();
       this.setState({ loaded: true });
     }
-    // this.state.characters.length > 1
-    //   ? this.makeTheDecks()
-    //   : console.log("Not here Yet");
-    // // this.state.gameStart ? this.startGame() : console.log("game not ready yet");
   }
   makeTheDecks = () => {
     // if (this.state.playerDeck.length < 1) {
@@ -89,7 +86,12 @@ class Home extends Component {
     if (!this.state.war && this.state.currentCard.length === 0) {
       let currentCard = [this.state.playerDeck.splice(0, 1)[0]];
       let currentCardBad = [this.state.botDeck.splice(0, 1)[0]];
-      if (this.state.playerDeck.length < 1 || this.state.botDeck.length < 1) {
+      if (
+        this.state.playerDeck.length < 1 ||
+        this.state.botDeck.length < 1 ||
+        this.state.playerScore >= 20 ||
+        this.state.computerScore >= 20
+      ) {
         this.setState({ endGame: true });
       }
       console.log(
@@ -188,15 +190,11 @@ class Home extends Component {
       this.warCompareCards();
     }
   }
+  // if it's a war compare cards and set up arrays for easy placement in proper decks
   warCompareCards = () => {
-    var totalArr = this.state.warArrBot[0].concat(this.state.warArrPlayer[0]);
+    let totalArr = this.state.warArrBot[0].concat(this.state.warArrPlayer[0]);
+    totalArr.push(this.state.currentCard[0], this.state.currentCardBad[0]);
     let count = totalArr.length;
-    console.log(
-      "bot value " +
-        this.state.warArrBot[0][this.state.warArrBot.length - 1].value,
-      this.state.warArrPlayer[0][this.state.warArrPlayer.length - 1].value,
-      totalArr
-    );
     if (
       this.state.warArrBot[0][this.state.warArrBot[0].length - 1].value >
       this.state.warArrPlayer[0][this.state.warArrPlayer[0].length - 1].value
@@ -214,6 +212,9 @@ class Home extends Component {
       this.setTimerMessage("b", newValue);
       console.log("Bot Deck" + this.state.botDeck);
     } else {
+      // else if (this.state.warArrBot[0][this.state.warArrBot[0].length - 1].value === this.state.warArrPlayer[0][this.state.warArrPlayer[0].length-1].value){
+
+      // }
       for (let i = 0; i < totalArr.length; i++) {
         this.state.playerDeck.push(totalArr[i]);
       }
@@ -240,11 +241,31 @@ class Home extends Component {
       })
       .catch(err => console.log(err));
   };
+  handleNewGame() {
+    this.setState({
+      endGame: false,
+      isHidden: true,
+      loaded: false,
+      playerDeck: [],
+      botDeck: [],
+      currentCard: [],
+      currentCardBad: [],
+      playerScore: 0,
+      computerScore: 0,
+      gameStart: true
+    });
+  }
   endGame = () => {
-    return <button>new game?</button>;
+    return (
+      <div className="new-game-box">
+        <button className="new-game-btn" onClick={this.handleNewGame}>
+          New game?
+        </button>
+      </div>
+    );
   };
   endGameDisplay = () => {
-    if (this.state.playerDeck.length < 1) {
+    if (this.state.playerDeck.length < 1 || this.state.computerScore >= 20) {
       return "Computer Wins Game!";
     } else {
       return "Player Wins Game!";
