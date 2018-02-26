@@ -74,9 +74,6 @@ class Home extends Component {
       playerDeck: shuffledDeck.slice(0, 8),
       botDeck: shuffledDeck.slice(8, 16)
     });
-    // } else {
-    //   console.log("decks are made", this.state.playerDeck);
-    // }
   };
   // shuffles input array
   shuffle = ([...arr]) => {
