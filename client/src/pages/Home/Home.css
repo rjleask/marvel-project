@@ -19,6 +19,12 @@ p{
   display: flex;
   flex-direction: column;
 }
+.content-wrapper{
+  display: flex;
+  flex-direction:column;
+  height: 100vh;
+  
+}
 /* intro page render when game has not started */
 .page-intro{
   width:100%;
@@ -91,6 +97,7 @@ p{
   background:rgba(255,255,255,0);
   color:white;
   border:1px solid white;
+  z-index: 200;
 }
 .compare-btn:hover{
   background:white;
@@ -104,7 +111,7 @@ p{
   justify-content: space-between;
   width: 100%;
   align-items: center;
-  flex:1;
+  flex:2;
 }
 .deck-holder-box{
  height: 210px;
@@ -114,14 +121,17 @@ p{
 }
 /* game middle area */
 .game-middle-row{
+  height: 200px;
   display: flex;
   justify-content: space-around;
   width: 100%;
   margin: 10px 0;
+  flex:1
 }
 .middle-card-boxes{
-  height: 210px;
-  width: 200px;
+  /* height: 210px; */
+  width: 100%;
+  display: flex;
   border: 1px solid red;
 }
 .middle-good{
@@ -159,6 +169,7 @@ p{
   justify-content: center;
   align-items: center;
   font-size: 60px;
+  z-index: 201;
 }
 .display-message h2{
   z-index: 100;
@@ -245,7 +256,7 @@ p{
   width: 80%;
   margin: 0 auto;
   border-radius: 4%;
-  height: 178px;
+  max-height: 100%;
   position: relative;
   overflow: hidden;
 }
@@ -255,7 +266,7 @@ p{
   width: 80%;
   margin: 0 auto;
   border-radius: 4%;
-  height: 178px;
+  max-height: 100%;  
   position: relative;
   overflow: hidden;
 }
@@ -265,7 +276,7 @@ p{
   width: 80%;
   margin: 0 auto;
   border-radius: 4%;
-  height: 178px;
+  max-height: 100%;
   position: relative;
   overflow: hidden;
 }
@@ -310,4 +321,10 @@ p{
 }
 
 /* end of playing card setup */
+@media(max-width:1050px){
+  .game-middle-row{
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
 

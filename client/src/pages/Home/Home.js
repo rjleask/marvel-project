@@ -18,6 +18,7 @@ class Home extends Component {
     this.handleDeckClick = this.handleDeckClick.bind(this);
     this.compareCards = this.compareCards.bind(this);
     this.handleNewGame = this.handleNewGame.bind(this);
+    this.finalCompare = this.finalCompare.bind(this);
     this.state = {
       characters: [],
       isHidden: true,
@@ -28,6 +29,7 @@ class Home extends Component {
       currentCard: [],
       currentCardBad: [],
       war: false,
+      doubleWar: false,
       warArrBot: [],
       warArrPlayer: [],
       displayMessage: false,
@@ -36,6 +38,8 @@ class Home extends Component {
       playerScore: 0,
       computerScore: 0,
       message: "none",
+      totalWarArr: "",
+      count: 0,
       endGame: false
     };
   }
@@ -117,7 +121,9 @@ class Home extends Component {
           currentCard: [],
           currentCardBad: [],
           warArrBot: [],
-          warArrPlayer: []
+          warArrPlayer: [],
+          doubleWar: false,
+          totalWarArr: ""
         });
       } else if (letter === "a") {
         this.setState({
@@ -128,7 +134,9 @@ class Home extends Component {
           currentCard: [],
           currentCardBad: [],
           warArrBot: [],
-          warArrPlayer: []
+          warArrPlayer: [],
+          doubleWar: false,
+          totalWarArr: ""
         });
       } else {
         this.setState({ displayMessage: false });
@@ -153,6 +161,93 @@ class Home extends Component {
     this.setTimerMessage("c", "war");
     console.log(this.state.warArrPlayer, this.state.warArrBot);
   };
+  doubleWar = () => {
+    this.setState({ doubleWar: true, displayMessage: true, message: "Tie!" });
+    this.setTimerMessage("c", "double war");
+  };
+  getRandomInt = max => {
+    return Math.floor(Math.random() * Math.floor(max));
+  };
+  computerWins = (deck, count, playerVal, computerVal) => {
+    // no war condition
+    if (!this.state.war) {
+      this.state.botDeck.push(playerVal, computerVal);
+      let newValue = this.state.botDeck;
+      this.setState({
+        displayMessage: true,
+        computerScore: this.state.computerScore + 2,
+        message: "Computer Wins Trick!"
+      });
+      this.setTimerMessage("b", newValue);
+      // double war condition
+    } else if (this.state.doubleWar) {
+      for (let i = 0; i < this.state.totalWarArr.length; i++) {
+        this.state.botDeck.push(this.state.totalWarArr[i]);
+      }
+      let newValue = this.state.botDeck;
+      this.setState({
+        displayMessage: true,
+        message: "Computer Wins! " + computerVal + ">" + playerVal,
+        computerScore: this.state.computerScore + this.state.count
+      });
+      this.setTimerMessage("b", newValue);
+      // war condition
+    } else {
+      for (let i = 0; i < deck.length; i++) {
+        this.state.botDeck.push(deck[i]);
+      }
+      let newValue = this.state.botDeck;
+      this.setState({
+        displayMessage: true,
+        message: "Computer Wins Trick!",
+        computerScore: this.state.computerScore + count
+      });
+      this.setTimerMessage("b", newValue);
+    }
+  };
+  playerWins = (deck, count, playerVal, computerVal) => {
+    if (!this.state.war) {
+      this.state.playerDeck.push(computerVal, playerVal);
+      let newValue = this.state.playerDeck;
+      this.setState({
+        displayMessage: true,
+        playerScore: this.state.playerScore + 2,
+        message: "Player Wins Trick!"
+      });
+      this.setTimerMessage("a", newValue);
+    } else if (this.state.doubleWar) {
+      for (let i = 0; i < this.state.totalWarArr.length; i++) {
+        this.state.playerDeck.push(this.state.totalWarArr[i]);
+      }
+      let newValue = this.state.playerDeck;
+      this.setState({
+        displayMessage: true,
+        message: "Player Wins! " + playerVal + ">" + computerVal,
+        playerScore: this.state.playerScore + this.state.count
+      });
+      this.setTimerMessage("a", newValue);
+    } else {
+      for (let i = 0; i < deck.length; i++) {
+        this.state.playerDeck.push(deck[i]);
+      }
+      let newValue = this.state.playerDeck;
+      this.setState({
+        displayMessage: true,
+        message: "Player Wins Trick!",
+        playerScore: this.state.playerScore + count
+      });
+      this.setTimerMessage("a", newValue);
+    }
+  };
+  finalCompare() {
+    let playerVal = this.getRandomInt(1000);
+    let computerVal = this.getRandomInt(1000);
+    if (playerVal > computerVal) {
+      this.playerWins("void", "void", playerVal, computerVal);
+    } else {
+      this.computerWins("void", "void", playerVal, computerVal);
+    }
+  }
   compareCards() {
     if (!this.state.war) {
       if (this.state.currentCard.length != 0) {
@@ -160,26 +255,10 @@ class Home extends Component {
         let playerCard = this.state.currentCard[0];
         // Bot wins condition
         if (botCard.value > playerCard.value) {
-          this.state.botDeck.push(botCard, playerCard);
-          let newValue = this.state.botDeck;
-          this.setState({
-            displayMessage: true,
-            computerScore: this.state.computerScore + 2,
-            message: "Computer Wins Trick!"
-          });
-          this.setTimerMessage("b", newValue);
-          console.log("Bot wins trick", this.state.botDeck);
+          this.computerWins("void", "void", playerCard, botCard);
           // player wins condition
         } else if (playerCard.value > botCard.value) {
-          this.state.playerDeck.push(botCard, playerCard);
-          let newValue = this.state.playerDeck;
-          this.setState({
-            displayMessage: true,
-            playerScore: this.state.playerScore + 2,
-            message: "Player Wins Trick!"
-          });
-          this.setTimerMessage("a", newValue);
-          console.log("Player wins trick", this.state.playerDeck);
+          this.playerWins("void", "void", playerCard, botCard);
           // war
         } else {
           this.war();
@@ -192,40 +271,24 @@ class Home extends Component {
   }
   // if it's a war compare cards and set up arrays for easy placement in proper decks
   warCompareCards = () => {
+    let computerWarValue = this.state.warArrBot[0][
+      this.state.warArrBot[0].length - 1
+    ].value;
+    let playerWarValue = this.state.warArrPlayer[0][
+      this.state.warArrPlayer[0].length - 1
+    ].value;
     let totalArr = this.state.warArrBot[0].concat(this.state.warArrPlayer[0]);
     totalArr.push(this.state.currentCard[0], this.state.currentCardBad[0]);
     let count = totalArr.length;
-    if (
-      this.state.warArrBot[0][this.state.warArrBot[0].length - 1].value >
-      this.state.warArrPlayer[0][this.state.warArrPlayer[0].length - 1].value
-    ) {
-      for (let i = 0; i < totalArr.length; i++) {
-        this.state.botDeck.push(totalArr[i]);
-      }
+    this.setState({ totalWarArr: totalArr, count: count });
+    if (computerWarValue > playerWarValue) {
+      this.computerWins(totalArr, count, "void", "void");
       totalArr = [];
-      let newValue = this.state.botDeck;
-      this.setState({
-        displayMessage: true,
-        message: "Computer Wins Trick!",
-        computerScore: this.state.computerScore + count
-      });
-      this.setTimerMessage("b", newValue);
-      console.log("Bot Deck" + this.state.botDeck);
+    } else if (computerWarValue === playerWarValue) {
+      this.doubleWar(totalArr, count);
     } else {
-      // else if (this.state.warArrBot[0][this.state.warArrBot[0].length - 1].value === this.state.warArrPlayer[0][this.state.warArrPlayer[0].length-1].value){
-
-      // }
-      for (let i = 0; i < totalArr.length; i++) {
-        this.state.playerDeck.push(totalArr[i]);
-      }
-      let newValue = this.state.playerDeck;
+      this.playerWins(totalArr, count, "void", "void");
       totalArr = [];
-      this.setState({
-        displayMessage: true,
-        message: "Player Wins Trick!",
-        playerScore: this.state.playerScore + count
-      });
-      this.setTimerMessage("a", newValue);
       console.log("Player Deck" + this.state.playerDeck);
     }
   };
@@ -280,16 +343,23 @@ class Home extends Component {
           "background-image:linear-gradient(to bottom, rgba(231, 8, 8,1), rgba(7, 7, 7,1), rgba(5, 9, 236,1));";
       }
       return (
-        <div>
+        <div className="content-wrapper">
           {/* if the display message is set to true render the display message */}
           {this.state.displayMessage ? (
             <MessageDisplay message={this.state.message} />
           ) : (
             ""
           )}
-          <button className="compare-btn" onClick={this.compareCards}>
-            VS
-          </button>
+          {/* if its a doublewar change the button to the final compare button */}
+          {!this.state.doubleWar ? (
+            <button className="compare-btn" onClick={this.compareCards}>
+              VS
+            </button>
+          ) : (
+            <button className="compare-btn" onClick={this.finalCompare}>
+              Decider
+            </button>
+          )}
           <DeckHolderBad
             deck={this.state.currentCardBad}
             numCards={this.state.botDeck.length}
