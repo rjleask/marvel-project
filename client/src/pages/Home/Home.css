@@ -23,7 +23,6 @@ p{
   display: flex;
   flex-direction:column;
   height: 100vh;
-  
 }
 /* intro page render when game has not started */
 .page-intro{
