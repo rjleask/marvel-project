@@ -190,6 +190,8 @@ p{
 }
 .new-game-btn:hover{
   cursor: pointer;
+  background:blue;
+  color:white;
 }
 /* display num cards */
 .score-box{
@@ -219,6 +221,7 @@ p{
 }
 /* playing card setup */
 .playingcard-box{
+  background:black;
   animation:1s ease-out 0s slideInFromLeft;      
   border: 14px solid black;
   width: 80%;
@@ -320,10 +323,12 @@ p{
 }
 
 /* end of playing card setup */
-@media(max-width:1050px){
+/* @media(max-width:1050px){
   .game-middle-row{
-    display: flex;
-    flex-wrap: wrap;
+    display:inline-block;
   }
-}
+  .middle-card-boxes{
+    height:200px;
+  }
+} */
 
