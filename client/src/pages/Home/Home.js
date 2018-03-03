@@ -59,10 +59,10 @@ class Home extends Component {
     this.state.characters.forEach(character => {
       deckInitial.push(character);
     });
-    let sectionArr1 = deckInitial.splice(0, 4);
-    let sectionArr2 = deckInitial.splice(0, 4);
-    let sectionArr3 = deckInitial.splice(0, 4);
-    for (let i = 0; i < 4; i++) {
+    let sectionArr1 = deckInitial.splice(0, 6);
+    let sectionArr2 = deckInitial.splice(0, 6);
+    let sectionArr3 = deckInitial.splice(0, 6);
+    for (let i = 0; i < 6; i++) {
       sectionArr1[i].value = i + 1;
       sectionArr2[i].value = i + 1;
       sectionArr3[i].value = i + 1;
@@ -72,8 +72,8 @@ class Home extends Component {
     let shuffledDeck = this.shuffle(deckFinal);
     // add player and bot decks
     this.setState({
-      playerDeck: shuffledDeck.slice(0, 8),
-      botDeck: shuffledDeck.slice(8, 16)
+      playerDeck: shuffledDeck.slice(0, 12),
+      botDeck: shuffledDeck.slice(12, 24)
     });
   };
   // shuffles input array
@@ -314,9 +314,9 @@ class Home extends Component {
       currentCard: [],
       currentCardBad: [],
       playerScore: 0,
-      computerScore: 0,
-      gameStart: true
+      computerScore: 0
     });
+    this.loadAllCharacters();
   }
   endGame = () => {
     return (

@@ -231,6 +231,15 @@ p{
   position: relative;
   overflow: hidden;
 }
+.chr-description{
+  color:white;
+  text-align: center;
+  animation:0.5s ease-in 0s fadeIn;
+  
+}
+.thumbnail{
+  animation:0.5s ease-in 0s fadeIn;  
+}
 .character-name{
   margin:0;
   padding: 0;
