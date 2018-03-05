@@ -14,7 +14,9 @@ class DeckHolderGood extends React.Component {
         <div
           className="deck-holder-box good-guys deck"
           onClick={this.props.action}
-        />
+        >
+          <div className="next-card">Next Card</div>
+        </div>
         <div className="deck-holder-box good-guys middle-good">
           {/* {console.log(this.props.deck)} */}
           {this.renderPlayingCards()}

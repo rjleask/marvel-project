@@ -1,0 +1,11 @@
+.titleTour {
+  color: red;
+  font-weight: bold;
+  text-align: center;
+}
+
+.bodyTour {
+  font-size: 0.9em;
+  /* text-align: left; */
+  padding: 10px;
+}

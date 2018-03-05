@@ -6,7 +6,7 @@ import API from "../../utils/API.js";
 import DeckHolderBad from "../../components/DeckHolderBad";
 import DeckHolderGood from "../../components/DeckHolderGood";
 import MiddleGame from "../../components/MiddleGameArea";
-// import { setTimeout } from "timers";
+import UserTour from "../../components/UserTour";
 import MessageDisplay from "../../components/MessageDisplay";
 import mainPicture from "./war.png";
 
@@ -344,6 +344,7 @@ class Home extends Component {
       }
       return (
         <div className="content-wrapper">
+          <UserTour />
           {/* if the display message is set to true render the display message */}
           {this.state.displayMessage ? (
             <MessageDisplay message={this.state.message} />
