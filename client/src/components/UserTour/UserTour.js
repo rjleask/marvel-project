@@ -27,7 +27,7 @@ class UserTour extends Component {
               title: <div className="titleTour">Welcome to Marvel War!</div>,
               body: (
                 <div className="bodyTour">
-                  The Point of this game is to either be the first to 25 points
+                  The Point of this game is to either be the first to 20 points
                   or control all the cards! You get points/cards by winning
                   tricks
                 </div>
