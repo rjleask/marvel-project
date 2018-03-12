@@ -2,6 +2,11 @@
   "name": "app",
   "version": "0.1.0",
   "private": true,
+  "homepage":"https://rjleask.github.io/marvel-project",
+  "devDependencies": {
+    "gh-pages":"^1.1.0",
+    "react-scripts": "1.0.17"    
+  },
   "dependencies": {
     "axios": "^0.17.1",
     "crypto-js": "^3.1.9-1",
@@ -12,12 +17,13 @@
     "react-progressive-image": "^0.3.0",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
-    "react-scripts": "1.0.17",
     "react-transition-group": "1.x",
     "react-user-tour": "^3.0.0",
     "react-visibility-sensor": "^3.11.0"
   },
   "scripts": {
+    "predeploy":"npm run build",
+    "deploy":"gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
